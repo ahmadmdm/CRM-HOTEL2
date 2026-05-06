@@ -4,6 +4,7 @@ import type { AppLanguage } from "@/lib/i18n";
 type RouteKey =
   | "login"
   | "dashboard"
+  | "account"
   | "units"
   | "bookings"
   | "customers"
@@ -30,6 +31,7 @@ const ROUTE_TITLES: Record<RouteKey, LocalizedText> = {
   app: BRAND_NAME,
   login: { ar: "تسجيل الدخول", en: "Sign In" },
   dashboard: { ar: "لوحة القيادة", en: "Dashboard" },
+  account: { ar: "الحساب والأمان", en: "Account & Security" },
   units: { ar: "الوحدات", en: "Units" },
   bookings: { ar: "الحجوزات", en: "Bookings" },
   customers: { ar: "العملاء", en: "Customers" },
@@ -49,6 +51,10 @@ const ROUTE_DESCRIPTIONS: Record<RouteKey, LocalizedText> = {
   dashboard: {
     ar: "ملخص تشغيلي حي للوحدات والحجوزات والجاهزية من شاشة موحدة.",
     en: "A live operational snapshot of units, bookings, and readiness from one workspace.",
+  },
+  account: {
+    ar: "إدارة بيانات الحساب وكلمة المرور من واجهة آمنة داخل النظام.",
+    en: "Manage account details and password securely from inside the application.",
   },
   units: {
     ar: "إدارة مخزون الوحدات وتغطيتها التشغيلية وتعيين الفرق من شاشة واحدة.",
@@ -87,6 +93,7 @@ const ROUTE_DESCRIPTIONS: Record<RouteKey, LocalizedText> = {
 function getRouteKey(pathname: string): RouteKey {
   if (pathname === "/login") return "login";
   if (pathname === "/") return "dashboard";
+  if (pathname.startsWith("/account")) return "account";
   if (pathname.startsWith("/units")) return "units";
   if (pathname.startsWith("/bookings")) return "bookings";
   if (pathname.startsWith("/customers")) return "customers";

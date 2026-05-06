@@ -46,8 +46,8 @@ export function Header() {
       toast({
         title: t("لا توجد وجهة مطابقة", "No matching destination found"),
         description: t(
-          "جرّب: الوحدات، الحجوزات، العملاء، المالية أو المستخدمون.",
-          "Try: units, bookings, customers, finance, or users."
+          "جرّب: الوحدات، الحجوزات، العملاء، المالية، المستخدمون أو الحساب والأمان.",
+          "Try: units, bookings, customers, finance, users, or account security."
         ),
         variant: "destructive",
       });

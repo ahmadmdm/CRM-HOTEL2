@@ -74,6 +74,20 @@ docker compose exec backend python -m app.scripts.seed_demo_data
 - API docs: http://localhost:8888/api/docs
 - Backend health: http://localhost:8888/health
 
+## Production Deployment
+
+Production runs behind an external host-managed Caddy reverse proxy and uses the Compose override file to bind frontend/backend to loopback only.
+
+- Deployment reference: [DEPLOYMENT.md](DEPLOYMENT.md)
+- Caddy reference: [Caddyfile.example](Caddyfile.example)
+- Production start command:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+```
+
+Important: for `crm.clo0.net`, Caddy must route `/api/backend/*` to the frontend before routing `/api/*` to the backend. This is required for the Next.js rewrite model used by the browser login flow.
+
 ## Demo Accounts
 
 After seeding demo data, the following accounts are available:

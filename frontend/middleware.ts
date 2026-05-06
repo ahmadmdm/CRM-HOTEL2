@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
-const SECRET = new TextEncoder().encode(
-  process.env.SECRET_KEY ?? process.env.NEXTAUTH_SECRET ?? "fallback-secret-change-in-production"
-);
+const secretValue = process.env.SECRET_KEY ?? process.env.NEXTAUTH_SECRET;
+
+if (!secretValue) {
+  throw new Error("SECRET_KEY or NEXTAUTH_SECRET must be configured for auth middleware");
+}
+
+const SECRET = new TextEncoder().encode(secretValue);
 
 // Routes accessible without authentication
 const PUBLIC_ROUTES = ["/login", "/api/auth", "/api/backend"];

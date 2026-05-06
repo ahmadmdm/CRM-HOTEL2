@@ -13,6 +13,7 @@ import {
   Building,
   LogOut,
   UserCog,
+  KeyRound,
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
@@ -72,6 +73,12 @@ export const dashboardNavItems: NavItem[] = [
     icon: UserCog,
     label: { ar: "المستخدمون", en: "Users" },
     roles: ["super_admin"],
+  },
+  {
+    href: "/account",
+    icon: KeyRound,
+    label: { ar: "الحساب والأمان", en: "Account & Security" },
+    roles: ["super_admin", "sub_admin", "financial", "operations", "maintenance", "housekeeping"],
   },
 ];
 
@@ -237,9 +244,19 @@ export function MobileDock() {
     return null;
   }
 
-  const visibleItems = dashboardNavItems
-    .filter((item) => item.roles.includes(user.role))
-    .slice(0, 5);
+  const availableItems = dashboardNavItems.filter((item) => item.roles.includes(user.role));
+  const activeItem = availableItems.find((item) => isItemActive(pathname, item.href));
+  const accountItem = availableItems.find((item) => item.href === "/account");
+  const priorityHrefs = Array.from(
+    new Set(["/", activeItem?.href, accountItem?.href].filter(Boolean))
+  ) as string[];
+
+  const visibleItems = [
+    ...priorityHrefs
+      .map((href) => availableItems.find((item) => item.href === href))
+      .filter((item): item is NavItem => Boolean(item)),
+    ...availableItems.filter((item) => !priorityHrefs.includes(item.href)),
+  ].slice(0, 5);
 
   return (
     <nav className="fixed inset-x-4 bottom-4 z-40 lg:hidden">

@@ -71,8 +71,13 @@ export default function LoginPage() {
         </div>
 
         <div className="w-full rounded-[24px] border border-primary/15 bg-primary/8 px-4 py-3 text-sm text-foreground">
-          <p className="font-semibold">{t("بيانات المدير الحالية", "Current admin credentials")}</p>
-          <p className="mt-1 text-muted-foreground" dir="ltr">admin@crm.local / Admin@1234</p>
+          <p className="font-semibold">{t("بيانات الدخول", "Sign-in details")}</p>
+          <p className="mt-1 text-muted-foreground">
+            {t(
+              "استخدم بيانات الحساب المخصصة لك. إذا لم تصلك بيانات الدخول من الإدارة، تواصل مع المسؤول.",
+              "Use the account details assigned to you. If you do not have credentials yet, contact your administrator."
+            )}
+          </p>
         </div>
       </div>
 

@@ -99,6 +99,22 @@ const VALIDATION_MESSAGES: Record<string, LocalizedText> = {
     en: "Password must be at least 8 characters",
   },
   "كلمة المرور مطلوبة": { ar: "كلمة المرور مطلوبة", en: "Password is required" },
+  "كلمة المرور الحالية مطلوبة": {
+    ar: "كلمة المرور الحالية مطلوبة",
+    en: "Current password is required",
+  },
+  "تأكيد كلمة المرور مطلوب": {
+    ar: "تأكيد كلمة المرور مطلوب",
+    en: "Password confirmation is required",
+  },
+  "تأكيد كلمة المرور غير متطابق": {
+    ar: "تأكيد كلمة المرور غير متطابق",
+    en: "Password confirmation does not match",
+  },
+  "كلمة المرور الجديدة يجب أن تختلف عن الحالية": {
+    ar: "كلمة المرور الجديدة يجب أن تختلف عن الحالية",
+    en: "New password must be different from the current one",
+  },
   "يرجى إدخال بريد إلكتروني صحيح": {
     ar: "يرجى إدخال بريد إلكتروني صحيح",
     en: "Please enter a valid email address",
@@ -127,6 +143,18 @@ const VALIDATION_MESSAGES: Record<string, LocalizedText> = {
   "خطأ في تسجيل الدخول. حاول مرة أخرى.": {
     ar: "خطأ في تسجيل الدخول. حاول مرة أخرى.",
     en: "Login failed. Please try again.",
+  },
+  "Current password is incorrect": {
+    ar: "كلمة المرور الحالية غير صحيحة",
+    en: "Current password is incorrect",
+  },
+  "New password must be different from the current password": {
+    ar: "كلمة المرور الجديدة يجب أن تختلف عن الحالية",
+    en: "New password must be different from the current password",
+  },
+  "User not found": {
+    ar: "المستخدم غير موجود",
+    en: "User not found",
   },
 };
 

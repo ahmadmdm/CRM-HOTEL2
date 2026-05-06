@@ -1,0 +1,47 @@
+{
+    email admin@example.com
+}
+
+(cloudflare_tls) {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+    }
+}
+
+crm.clo0.net {
+    import cloudflare_tls
+
+    # Browser requests to /api/backend/* must reach Next.js first so the
+    # frontend rewrite can forward them to backend /api/v1/*.
+    handle /api/backend/* {
+        reverse_proxy 127.0.0.1:3810
+    }
+
+    handle /api/* {
+        reverse_proxy 127.0.0.1:3811
+    }
+
+    handle /uploads/* {
+        reverse_proxy 127.0.0.1:3811
+    }
+
+    handle /health {
+        reverse_proxy 127.0.0.1:3811
+    }
+
+    handle /api/docs* {
+        reverse_proxy 127.0.0.1:3811
+    }
+
+    handle /api/redoc* {
+        reverse_proxy 127.0.0.1:3811
+    }
+
+    handle /api/openapi.json {
+        reverse_proxy 127.0.0.1:3811
+    }
+
+    handle {
+        reverse_proxy 127.0.0.1:3810
+    }
+}

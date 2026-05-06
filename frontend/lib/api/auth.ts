@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api/client";
-import type { LoginRequest, TokenResponse, User } from "@/types";
+import type { ChangePasswordRequest, LoginRequest, TokenResponse, User } from "@/types";
 
 export const authApi = {
   login: async (data: LoginRequest): Promise<TokenResponse> => {
@@ -14,6 +14,10 @@ export const authApi = {
 
   logout: async (): Promise<void> => {
     await apiClient.post("/auth/logout", {});
+  },
+
+  changePassword: async (data: ChangePasswordRequest): Promise<void> => {
+    await apiClient.post("/auth/change-password", data);
   },
 
   me: async (): Promise<User> => {

@@ -1,9 +1,33 @@
 import json
 import secrets
-from typing import List, Literal, Self
+from typing import Any, List, Literal, Self
 
 from pydantic import Field, ValidationError, field_validator, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import (
+    BaseSettings,
+    DotEnvSettingsSource,
+    EnvSettingsSource,
+    PydanticBaseSettingsSource,
+    SettingsConfigDict,
+)
+
+
+class _RawAllowedOriginsMixin:
+    def prepare_field_value(
+        self, field_name: str, field: Any, value: Any, value_is_complex: bool
+    ) -> Any:
+        if field_name == "ALLOWED_ORIGINS" and isinstance(value, str):
+            return value
+
+        return super().prepare_field_value(field_name, field, value, value_is_complex)
+
+
+class RawEnvSettingsSource(_RawAllowedOriginsMixin, EnvSettingsSource):
+    pass
+
+
+class RawDotEnvSettingsSource(_RawAllowedOriginsMixin, DotEnvSettingsSource):
+    pass
 
 
 class Settings(BaseSettings):
@@ -40,11 +64,29 @@ class Settings(BaseSettings):
     REFRESH_COOKIE_NAME: str = "crm_refresh_token"
     COOKIE_SECURE: bool = False
     COOKIE_SAMESITE: str = "lax"
+    AUTH_LOGIN_RATE_LIMIT: str = "5/minute"
+    AUTH_REFRESH_RATE_LIMIT: str = "20/minute"
 
     # CORS
     ALLOWED_ORIGINS: List[str] = Field(
         default_factory=lambda: ["http://localhost:3000", "http://frontend:3000"]
     )
+
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        return (
+            init_settings,
+            RawEnvSettingsSource(settings_cls),
+            RawDotEnvSettingsSource(settings_cls),
+            file_secret_settings,
+        )
 
     # File Storage
     UPLOAD_DIR: str = "/app/uploads"

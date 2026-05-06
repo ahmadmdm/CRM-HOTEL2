@@ -4,11 +4,13 @@ from app.domain.schemas.user import (
     LoginRequest,
     RefreshTokenRequest,
     TokenResponse,
+    UserPasswordChange,
 )
 from app.services.auth_service import AuthService, UserService
 from app.core.dependencies import DBSession, CurrentUserPayload
 from app.domain.schemas.user import UserResponse
 from app.core.config import settings
+from app.core.rate_limit import limiter
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -34,7 +36,8 @@ def _clear_refresh_cookie(response: Response) -> None:
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(data: LoginRequest, response: Response, db: DBSession):
+@limiter.limit(settings.AUTH_LOGIN_RATE_LIMIT)
+async def login(request: Request, data: LoginRequest, response: Response, db: DBSession):
     service = AuthService(db)
     token_response, refresh_token = await service.login(data)
     _set_refresh_cookie(response, refresh_token)
@@ -42,6 +45,7 @@ async def login(data: LoginRequest, response: Response, db: DBSession):
 
 
 @router.post("/refresh", response_model=AccessTokenResponse)
+@limiter.limit(settings.AUTH_REFRESH_RATE_LIMIT)
 async def refresh_token(
     request: Request,
     response: Response,
@@ -69,6 +73,19 @@ async def refresh_token(
 async def logout(response: Response):
     _clear_refresh_cookie(response)
     return {"message": "Logged out"}
+
+
+@router.post("/change-password")
+async def change_password(
+    data: UserPasswordChange,
+    payload: CurrentUserPayload,
+    db: DBSession,
+):
+    from uuid import UUID
+
+    service = AuthService(db)
+    await service.change_password(UUID(payload["sub"]), data)
+    return {"message": "Password updated"}
 
 
 @router.get("/me", response_model=UserResponse)
