@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM Hotel User Guide</title>
+    <style>
+      @font-face {
+        font-family: "Thmanyah Sans";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahsans/woff2/thmanyahsans-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Sans";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahsans/woff2/thmanyahsans-Medium.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Sans";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahsans/woff2/thmanyahsans-Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Serif Display";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Serif Display";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      :root {
+        --ink: #12253c;
+        --muted: #64788c;
+        --paper: #fffdf9;
+        --warm: #f4eee6;
+        --panel: rgba(255, 255, 255, 0.88);
+        --line: rgba(18, 37, 60, 0.1);
+        --accent: #ff7a1a;
+        --accent-soft: rgba(255, 122, 26, 0.12);
+        --mint: rgba(145, 216, 203, 0.2);
+        --sky: rgba(220, 235, 246, 0.42);
+        --shadow: 0 28px 72px rgba(18, 37, 60, 0.12);
+        --radius-xl: 30px;
+        --radius-lg: 24px;
+        --radius-md: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Thmanyah Sans", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(255, 122, 26, 0.16), transparent 24%),
+          radial-gradient(circle at bottom right, rgba(145, 216, 203, 0.16), transparent 24%),
+          linear-gradient(180deg, #f4ede5 0%, #fffdfa 100%);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      .guide {
+        width: 210mm;
+        margin: 0 auto;
+      }
+
+      .page {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        padding: 12.5mm;
+        page-break-after: always;
+        overflow: hidden;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      .sheet {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 36px;
+        padding: 8.5mm;
+        background: var(--panel);
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+        display: flex;
+        flex-direction: column;
+        gap: 5mm;
+      }
+
+      .sheet::before,
+      .sheet::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        z-index: 0;
+      }
+
+      .sheet::before {
+        width: 104mm;
+        height: 104mm;
+        inset-inline-start: -36mm;
+        top: -34mm;
+        background: radial-gradient(circle, rgba(255, 122, 26, 0.14), transparent 72%);
+      }
+
+      .sheet::after {
+        width: 78mm;
+        height: 78mm;
+        inset-inline-end: -18mm;
+        bottom: -14mm;
+        background: radial-gradient(circle, rgba(145, 216, 203, 0.2), transparent 72%);
+      }
+
+      .sheet > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .topbar,
+      .footer,
+      .section-head,
+      .split,
+      .triplet,
+      .matrix {
+        display: grid;
+        gap: 4mm;
+      }
+
+      .topbar,
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .section-head {
+        grid-template-columns: 1fr auto;
+        align-items: start;
+      }
+
+      .split {
+        grid-template-columns: 1.08fr 0.92fr;
+      }
+
+      .triplet {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .kicker,
+      .page-no,
+      .chip,
+      .panel,
+      .shot,
+      .table-shell,
+      .step,
+      .callout,
+      .footer-note {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.84);
+        box-shadow: var(--shadow);
+      }
+
+      .kicker,
+      .page-no,
+      .chip,
+      .footer-note {
+        box-shadow: none;
+      }
+
+      .kicker,
+      .page-no,
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+      }
+
+      .kicker {
+        align-self: flex-start;
+        padding: 7px 14px;
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .page-no {
+        width: 14mm;
+        height: 14mm;
+        background: var(--ink);
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .chip {
+        padding: 6px 10px;
+        color: var(--ink);
+        font-size: 10.5px;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        font-family: "Thmanyah Serif Display", serif;
+        line-height: 1.18;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+
+      h2 {
+        font-size: 23px;
+      }
+
+      h3 {
+        font-size: 18px;
+      }
+
+      h4 {
+        font-size: 15px;
+      }
+
+      p,
+      li,
+      td,
+      th,
+      .small,
+      .eyebrow {
+        font-size: 12.5px;
+        line-height: 1.9;
+      }
+
+      p,
+      li,
+      td,
+      .small,
+      .eyebrow {
+        color: var(--muted);
+      }
+
+      .lead {
+        display: flex;
+        flex-direction: column;
+        gap: 4mm;
+      }
+
+      .lead p,
+      .panel p,
+      .callout p {
+        margin: 0;
+      }
+
+      .hero-panel {
+        border-radius: var(--radius-xl);
+        padding: 7mm;
+        background: linear-gradient(150deg, rgba(18, 37, 60, 0.96), rgba(30, 58, 91, 0.94));
+        color: white;
+      }
+
+      .hero-panel p,
+      .hero-panel li,
+      .hero-panel .eyebrow {
+        color: rgba(255, 255, 255, 0.82);
+      }
+
+      .hero-panel ul,
+      .panel ul,
+      .callout ul,
+      .step ul {
+        margin: 0;
+        padding: 0 18px 0 0;
+      }
+
+      .panel,
+      .shot,
+      .table-shell,
+      .step,
+      .callout {
+        border-radius: var(--radius-lg);
+      }
+
+      .panel,
+      .table-shell,
+      .callout {
+        padding: 5mm;
+      }
+
+      .panel strong,
+      .step strong {
+        color: var(--ink);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3.5mm;
+      }
+
+      .stat {
+        padding: 4mm;
+        border-radius: var(--radius-md);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 238, 230, 0.86));
+        border: 1px solid rgba(18, 37, 60, 0.08);
+      }
+
+      .stat strong {
+        display: block;
+        color: var(--ink);
+        font-size: 18px;
+        margin-bottom: 1.5mm;
+      }
+
+      .eyebrow {
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .shots {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4mm;
+      }
+
+      .shot {
+        padding: 4mm;
+        overflow: hidden;
+      }
+
+      .shot img {
+        display: block;
+        width: 100%;
+        border-radius: 16px;
+      }
+
+      .caption {
+        display: flex;
+        justify-content: space-between;
+        gap: 3mm;
+        margin-top: 3mm;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4mm;
+      }
+
+      .step {
+        padding: 4.5mm;
+        background: linear-gradient(180deg, rgba(220, 235, 246, 0.28), rgba(255, 255, 255, 0.88));
+      }
+
+      .step-index {
+        display: inline-flex;
+        width: 9mm;
+        height: 9mm;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        background: var(--ink);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        margin-bottom: 2mm;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        text-align: start;
+        vertical-align: top;
+        padding: 3mm 2mm;
+        border-bottom: 1px solid rgba(18, 37, 60, 0.08);
+      }
+
+      th {
+        color: var(--ink);
+        font-size: 12px;
+      }
+
+      .callout {
+        background: linear-gradient(135deg, rgba(255, 122, 26, 0.1), rgba(255, 255, 255, 0.92));
+      }
+
+      .footer-note {
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .accent {
+        color: var(--accent);
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="guide">
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">CRM Hotel | User Guide</div>
+            <div class="page-no">01</div>
+          </div>
+          <div class="split" style="align-items: center; flex: 1;">
+            <div class="lead">
+              <div style="display: flex; gap: 3mm; flex-wrap: wrap;">
+                <div class="chip">A4 PDF</div>
+                <div class="chip">Arabic-First</div>
+                <div class="chip">Every Page Covered</div>
+              </div>
+              <h1>
+                دليل المستخدم التشغيلي الكامل<br />
+                لمنصة <span class="accent">CRM Hotel</span>
+              </h1>
+              <p>
+                هذا الدليل مكتوب لفرق الإدارة، العمليات، المالية، التنظيف، والصيانة. يغطي كل صفحة داخل النظام، ويشرح
+                ما الذي يراه المستخدم، وما الذي يمكنه تنفيذه، وأفضل طريقة لاستخدام الصفحة ضمن سير العمل الحقيقي.
+              </p>
+              <div class="hero-panel">
+                <div class="eyebrow">Included in this guide</div>
+                <ul>
+                  <li>جولة عملية مفصلة لكل صفحة من صفحات المشروع.</li>
+                  <li>توضيح الصلاحيات والاختلاف بين المسارات الإدارية والميدانية.</li>
+                  <li>أفضل ممارسات استخدام سريعة لتقليل الأخطاء ورفع جودة التشغيل.</li>
+                </ul>
+              </div>
+              <div class="stats">
+                <div class="stat"><strong>11</strong><span class="small">صفحة مشروحة</span></div>
+                <div class="stat"><strong>6</strong><span class="small">أدوار وصول</span></div>
+                <div class="stat"><strong>2</strong><span class="small">واجهات ميدانية</span></div>
+                <div class="stat"><strong>1</strong><span class="small">مرجع تشغيل موحد</span></div>
+              </div>
+            </div>
+            <div class="shots">
+              <div class="shot" style="grid-column: span 2;">
+                <img src="./screenshots/dashboard.png" alt="Dashboard" />
+                <div class="caption"><span>لوحة القيادة</span><span>Main executive view</span></div>
+              </div>
+              <div class="shot">
+                <img src="./screenshots/login.png" alt="Login" />
+                <div class="caption"><span>الدخول</span><span>Secure access</span></div>
+              </div>
+              <div class="shot">
+                <img src="./screenshots/operations.png" alt="Operations" />
+                <div class="caption"><span>العمليات</span><span>Service flow</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Prepared from the current codebase routes and page components</div>
+            <div class="footer-note">May 2026</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">Orientation</div>
+            <div class="page-no">02</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>كيف تستخدم هذا النظام؟</h2>
+              <p>قبل الدخول في صفحات النظام، من المهم فهم توزيع الأدوار والعناصر المشتركة التي ستتكرر عبر أغلب الشاشات.</p>
+            </div>
+            <div style="display: flex; gap: 2.5mm; flex-wrap: wrap;">
+              <div class="chip">Bilingual</div>
+              <div class="chip">Role-aware</div>
+              <div class="chip">Responsive</div>
+            </div>
+          </div>
+          <div class="table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th>الدور</th>
+                  <th>المسار المعتاد بعد الدخول</th>
+                  <th>أبرز الصفحات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Super Admin</td>
+                  <td>لوحة التحكم الرئيسية</td>
+                  <td>الوحدات، المستخدمون، المالية، العمليات، الحجوزات</td>
+                </tr>
+                <tr>
+                  <td>Sub Admin</td>
+                  <td>لوحة التحكم الرئيسية</td>
+                  <td>الوحدات، الحجوزات، العملاء، العمليات</td>
+                </tr>
+                <tr>
+                  <td>Financial</td>
+                  <td>صفحة المالية</td>
+                  <td>المالية، الحساب، لوحة القيادة بحسب الصلاحية</td>
+                </tr>
+                <tr>
+                  <td>Operations</td>
+                  <td>لوحة التحكم الرئيسية</td>
+                  <td>العمليات، الوحدات، الحجوزات، العملاء</td>
+                </tr>
+                <tr>
+                  <td>Housekeeping</td>
+                  <td>صفحة التنظيف</td>
+                  <td>المهام المسندة فقط</td>
+                </tr>
+                <tr>
+                  <td>Maintenance</td>
+                  <td>صفحة الصيانة</td>
+                  <td>التذاكر المسندة فقط</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-index">1</div>
+              <h4>الشريط الجانبي</h4>
+              <p>يعرض فقط الصفحات المناسبة لدورك. لا يفترض أن يرى كل مستخدم كامل التنقل نفسه.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">2</div>
+              <h4>الترويسة</h4>
+              <p>منها تستطيع الوصول إلى البحث السريع، اللغة، الثيم، وإعدادات التنبيهات.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">3</div>
+              <h4>اللغة</h4>
+              <p>النظام يعمل بالعربية والإنجليزية. العربية تظهر باتجاه RTL عبر كامل الواجهة.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">4</div>
+              <h4>الإشعارات</h4>
+              <p>يمكن تفعيل تنبيهات المتصفح، ما يفيد خصوصًا في متابعة التذاكر والمهام.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <h3>قاعدة تشغيلية مهمة</h3>
+            <p>ابدأ يومك دائمًا من الصفحة التي تعكس دورك الأساسي، ثم انتقل إلى الصفحات الداعمة. هذا يسرّع العمل ويقلل التكرار.</p>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Shared navigation and role awareness</div>
+            <div class="footer-note">Orientation</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">Login & Dashboard</div>
+            <div class="page-no">03</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>1. صفحة تسجيل الدخول ولوحة القيادة</h2>
+              <p>هذان المساران يشكلان بداية التجربة: الأول للتحقق والعبور الآمن، والثاني للقراءة التنفيذية السريعة لحالة التشغيل.</p>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>تسجيل الدخول</h3>
+              <ul>
+                <li>أدخل البريد الإلكتروني وكلمة المرور الممنوحة لك من الإدارة.</li>
+                <li>يمكن إظهار كلمة المرور أو إخفاؤها قبل الإرسال.</li>
+                <li>إذا كان دورك ميدانيًا، سيتم نقلك مباشرة إلى واجهة التنظيف أو الصيانة.</li>
+                <li>إذا كان دورك ماليًا، فغالبًا ستبدأ من صفحة المالية.</li>
+                <li>رسائل الخطأ تظهر بالعربية أو الإنجليزية وفق اللغة النشطة.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/login.png" alt="Login page" />
+              <div class="caption"><span>صفحة الدخول</span><span>Authentication</span></div>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>لوحة القيادة</h3>
+              <ul>
+                <li>تعرض إجمالي عدد الوحدات، ونسبة الإشغال، وتوزيع الحالات التشغيلية.</li>
+                <li>تظهر أحدث الحجوزات لتسهيل فهم الحركة الحالية.</li>
+                <li>إذا فشل التحميل تستطيع إعادة المحاولة من الصفحة نفسها.</li>
+                <li>أفضل استخدام لها هو كمرجع سريع قبل فتح صفحات التفاصيل.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/dashboard.png" alt="Dashboard page" />
+              <div class="caption"><span>لوحة القيادة</span><span>Executive dashboard</span></div>
+            </div>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-index">A</div>
+              <h4>استخدمها للرقابة</h4>
+              <p>تعامل مع لوحة القيادة كمرآة لحظية، لا كمصدر الإدخال الرئيسي للبيانات.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">B</div>
+              <h4>انتقل بعدها للتنفيذ</h4>
+              <p>إذا ظهر ضغط على الإشغال أو الحجز أو الصيانة، افتح الصفحة التفصيلية مباشرة واتخذ الإجراء.</p>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Start here: authentication and executive view</div>
+            <div class="footer-note">Pages 1-2</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">Units</div>
+            <div class="page-no">04</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>2. صفحة الوحدات</h2>
+              <p>هذه الصفحة هي قلب المخزون التشغيلي. كل شيء يبدأ من تعريف الوحدة، حالتها، وتغطيتها بواسطة الفرق.</p>
+            </div>
+            <div class="chip">For Admin + Operations</div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>ما الذي يمكنك فعله هنا؟</h3>
+              <ul>
+                <li>إنشاء وحدة جديدة مع الكود والاسم والطابق وعدد الغرف والحمامات والمساحة والسعر الأساسي.</li>
+                <li>البحث باسم الوحدة أو كودها.</li>
+                <li>تصفية الوحدات حسب الحالة: vacant, ready, reserved, occupied, waiting_cleaning, maintenance.</li>
+                <li>إظهار الوحدات غير المكتملة التغطية فقط لمعالجة النقص التشغيلي.</li>
+                <li>إسناد مشرف وفريق تنظيف وفريق صيانة لكل وحدة.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/units.png" alt="Units page" />
+              <div class="caption"><span>الوحدات</span><span>Inventory and staffing</span></div>
+            </div>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-index">1</div>
+              <h4>إنشاء الوحدة</h4>
+              <p>أدخل البيانات الأساسية، ثم احفظ. بعد ذلك تصبح الوحدة قابلة للاستخدام داخل الحجوزات والتغطية التشغيلية.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">2</div>
+              <h4>ضبط الحالة</h4>
+              <p>استخدم أزرار الانتقال السياقية لتغيير الحالة فقط عندما يعكس ذلك الواقع التشغيلي.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">3</div>
+              <h4>الإسناد الفردي</h4>
+              <p>حدد المشرف وفرق التنظيف والصيانة في بطاقة الوحدة نفسها لتوضيح المسؤولية.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">4</div>
+              <h4>الإسناد الجماعي</h4>
+              <p>يمكن استبدال التغطية أو تفريغها لعدة وحدات دفعة واحدة مع نافذة تأكيد قبل التنفيذ.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <h3>أفضل ممارسة</h3>
+            <p>لا تترك وحدة بلا تغطية. مؤشر النقص في التغطية موجود ليساعدك على سد الفجوات قبل أن تتحول إلى تأخير تشغيلي.</p>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Unit lifecycle and staffing coverage</div>
+            <div class="footer-note">Page 3</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">Bookings</div>
+            <div class="page-no">05</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>3. صفحة الحجوزات</h2>
+              <p>تربط هذه الصفحة بين الضيف والوحدة والزمن والإيراد، وهي المصدر الأوضح لفهم حركة الإشغال اليومية.</p>
+            </div>
+            <div class="chip">Bookings and stay flow</div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>الوظائف الأساسية</h3>
+              <ul>
+                <li>إنشاء حجز جديد مع الوحدة والعميل وتاريخي الدخول والخروج والتكلفة وقناة الحجز.</li>
+                <li>تتبع عدد الضيوف بين 1 و20 ضيفًا.</li>
+                <li>البحث باسم العميل أو كود الوحدة.</li>
+                <li>تصفية الحالة: pending, confirmed, checked_in, checked_out, cancelled.</li>
+                <li>تنفيذ عمليات Check-in وCheck-out وCancel من الجدول نفسه.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/bookings.png" alt="Bookings page" />
+              <div class="caption"><span>الحجوزات</span><span>Reservation control</span></div>
+            </div>
+          </div>
+          <div class="table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th>حقل مهم</th>
+                  <th>الغرض</th>
+                  <th>أمثلة</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Booking Channel</td>
+                  <td>معرفة مصدر الحجز وتحليل الأداء التجاري</td>
+                  <td>Direct, Airbnb, Booking.com, Agoda, Phone, Walk-in</td>
+                </tr>
+                <tr>
+                  <td>Total Cost</td>
+                  <td>مرجع إيرادي مباشر للحجز</td>
+                  <td>القيمة الإجمالية للإقامة</td>
+                </tr>
+                <tr>
+                  <td>Notes</td>
+                  <td>تسجيل الاستثناءات أو الطلبات الخاصة</td>
+                  <td>وصول متأخر، تفضيلات تنظيف، ملاحظات VIP</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <h3>أفضل ممارسة</h3>
+            <p>احرص على تنفيذ تسجيل الدخول والخروج من نفس الصفحة بدل تعديل الحالة يدويًا خارج السياق، حتى تبقى الحركة مرتبطة بالتواريخ الصحيحة.</p>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Booking creation, status control, and revenue visibility</div>
+            <div class="footer-note">Page 4</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">Customers & Operations</div>
+            <div class="page-no">06</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>4. العملاء والعمليات</h2>
+              <p>هنا تنتقل التجربة من حفظ بيانات الضيف إلى إدارة الخدمة اليومية الناتجة عن احتياجه أو عن حالة الوحدة.</p>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>صفحة العملاء</h3>
+              <ul>
+                <li>إضافة عميل مع الاسم والهاتف والهوية والجنسية والبريد.</li>
+                <li>البحث السريع بالاسم أو الهاتف.</li>
+                <li>إدراج العميل ضمن القائمة السوداء مع سبب الحظر أو إزالة الحظر لاحقًا.</li>
+                <li>التبديل بين عرض كل العملاء أو عرض المحظورين فقط.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/customers.png" alt="Customers page" />
+              <div class="caption"><span>العملاء</span><span>Guest records</span></div>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>صفحة العمليات</h3>
+              <ul>
+                <li>قسم لمهام التنظيف وقسم لتذاكر الصيانة.</li>
+                <li>إنشاء مهمة تنظيف مرتبطة بوحدة وشخص مسؤول وملاحظات.</li>
+                <li>إنشاء تذكرة صيانة مع عنوان ووصف وأولوية ومسؤول.</li>
+                <li>تحديث حالة التذكرة من open إلى in_progress ثم resolved ثم closed.</li>
+                <li>عرض أعداد المهام المعلقة والتذاكر العاجلة لتسهيل الفرز اليومي.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/operations.png" alt="Operations page" />
+              <div class="caption"><span>العمليات</span><span>Task orchestration</span></div>
+            </div>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-index">1</div>
+              <h4>ابدأ من العميل أو الوحدة</h4>
+              <p>إذا كانت هناك ملاحظة أو شكوى، تأكد من تحديث السجل المناسب أولًا قبل إنشاء المهمة.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">2</div>
+              <h4>حوّل المعلومة إلى إجراء</h4>
+              <p>أنشئ مهمة تنظيف أو تذكرة صيانة مباشرة بدل الاعتماد على المحادثات الشفهية أو الرسائل الخارجية.</p>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Customer continuity and operational action</div>
+            <div class="footer-note">Pages 5-6</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">Finance</div>
+            <div class="page-no">07</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>5. صفحة المالية</h2>
+              <p>صفحة المالية هي أوسع صفحة وظيفيًا، وتخدم الإدارة المالية والحسابية بما يتجاوز التتبع البسيط للإيرادات والمصروفات.</p>
+            </div>
+            <div class="chip">For Financial + Super Admin</div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>الألسنة الرئيسية داخل الصفحة</h3>
+              <ul>
+                <li>Summary: نظرة عليا على مؤشرات الأداء المالي.</li>
+                <li>Revenue: قراءة تدفقات الإيراد وربطها بالسجلات.</li>
+                <li>Expenses: تسجيل المصروفات بحسب الفئة والتاريخ والوحدة.</li>
+                <li>Invoices: متابعة الفواتير وكشوف الملاك.</li>
+                <li>Accounting: قيود يدوية، حسابات، وميزان مراجعة.</li>
+                <li>Contracts: عقود الإدارة ونسب الرسوم وحالة العقد.</li>
+                <li>Owners: العرض المرتبط بالملاك والتقارير الخاصة بهم.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/finance.png" alt="Finance page" />
+              <div class="caption"><span>المالية</span><span>Accounting and contracts</span></div>
+            </div>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-index">1</div>
+              <h4>تسجيل مصروف</h4>
+              <p>أدخل الفئة والمبلغ والوصف والتاريخ وربطه بالوحدة إن وجد، حتى لا تبقى المصروفات بلا مرجعية.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">2</div>
+              <h4>إنشاء قيد يدوي</h4>
+              <p>اختر حساب المدين والدائن والمبلغ والوصف والتاريخ. هذا مفيد لتسويات لا تنتج تلقائيًا من العمليات اليومية.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">3</div>
+              <h4>بناء عقد إدارة</h4>
+              <p>اربط الوحدة بالمالك والجهة المديرة وحدد نسبة الرسوم وفترة العقد وحالته: active أو paused أو ended.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">4</div>
+              <h4>توليد كشف مالك</h4>
+              <p>حدد فترة البداية والنهاية لإنتاج بيان يربط النتائج المالية بالفترة المعنية.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <h3>أفضل ممارسة</h3>
+            <p>افصل بين المصروفات التشغيلية اليومية وبين القيود المحاسبية التصحيحية. كلاهما مهم لكن لكل منهما وظيفة مختلفة داخل الصفحة.</p>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Expenses, invoices, accounting, contracts, owners</div>
+            <div class="footer-note">Page 7</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">Users & Security</div>
+            <div class="page-no">08</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>6. المستخدمون والحساب والأمان</h2>
+              <p>تضمن هذه الصفحات أن من يدخل النظام هو الشخص الصحيح، وبالدور الصحيح، وبقدرة واضحة على تغطية الوحدات والمهام.</p>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>صفحة المستخدمين</h3>
+              <ul>
+                <li>إنشاء مستخدم جديد بالبريد وكلمة المرور والاسم الكامل والدور والهاتف.</li>
+                <li>تعديل المستخدم أو حذفه أو تغيير حالة التفعيل.</li>
+                <li>مراجعة جدول تغطية الوحدات لمعرفة من يغطي أي وحدة كمشرف أو تنظيف أو صيانة.</li>
+                <li>البحث بالاسم أو البريد مع ترقيم للصفحات.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/users.png" alt="Users page" />
+              <div class="caption"><span>المستخدمون</span><span>Identity and roles</span></div>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>صفحة الحساب والأمان</h3>
+              <ul>
+                <li>تغيير كلمة المرور الحالية مع تأكيد الكلمة الجديدة.</li>
+                <li>لا يسمح باستخدام نفس كلمة المرور القديمة.</li>
+                <li>بعد النجاح يتم تسجيل الخروج تلقائيًا ويطلب تسجيل الدخول مجددًا.</li>
+                <li>تظهر رسائل نجاح أو فشل واضحة عبر التنبيهات.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/account.png" alt="Account page" />
+              <div class="caption"><span>الحساب والأمان</span><span>Password management</span></div>
+            </div>
+          </div>
+          <div class="callout">
+            <h3>أفضل ممارسة</h3>
+            <p>عند نقل موظف من دور لآخر، حدّث دوره وتغطيته التشغيلية معًا. تغيير الدور وحده دون مراجعة التغطية قد يخلق فجوات داخل الوحدات.</p>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Role governance and session protection</div>
+            <div class="footer-note">Pages 8-9</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">Field Modes</div>
+            <div class="page-no">09</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>7. واجهتا التنظيف والصيانة</h2>
+              <p>هاتان الصفحتان صُممتا لتقليل التعقيد، بحيث يرى العامل فقط العمل المسند له ويستطيع تنفيذه بسرعة من الهاتف أو الجهاز اللوحي.</p>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>واجهة التنظيف</h3>
+              <ul>
+                <li>تعرض المهام المسندة للمستخدم الحالي فقط.</li>
+                <li>تفصل بين المهام غير المنجزة والمنجزة.</li>
+                <li>تُحدّث البيانات تلقائيًا كل 30 ثانية.</li>
+                <li>زر مباشر لتسجيل المهمة كمنجزة.</li>
+                <li>توفر تبديل اللغة وتسجيل الخروج ضمن نفس الواجهة.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/housekeeping.png" alt="Housekeeping page" />
+              <div class="caption"><span>التنظيف</span><span>Housekeeping mode</span></div>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h3>واجهة الصيانة</h3>
+              <ul>
+                <li>تعرض التذاكر المفتوحة والجارية فقط للمستخدم الحالي.</li>
+                <li>تُظهر الأولوية بشكل لوني واضح: منخفضة، متوسطة، عالية، عاجلة.</li>
+                <li>تسمح بتغيير الحالة أثناء التنفيذ من نفس البطاقة.</li>
+                <li>تحدث البيانات دوريًا لضمان تزامن الفريق مع العمليات.</li>
+              </ul>
+            </div>
+            <div class="panel" style="background: linear-gradient(180deg, rgba(220, 235, 246, 0.38), rgba(255,255,255,0.88));">
+              <h3>لماذا المسار الميداني مهم؟</h3>
+              <p>لأنه يزيل الضوضاء. العامل لا يحتاج رؤية الإيرادات أو المستخدمين أو العقود. يحتاج فقط ما يجب تنفيذه الآن، وهذا ما توفره الواجهتان.</p>
+            </div>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-index">1</div>
+              <h4>للعمليات</h4>
+              <p>أسند المهمة أو التذكرة من صفحة العمليات بشكل صحيح إلى الشخص المناسب.</p>
+            </div>
+            <div class="step">
+              <div class="step-index">2</div>
+              <h4>للفريق الميداني</h4>
+              <p>استخدم الصفحة المخصصة لك فقط. كل تحديث تجريه هناك ينعكس على بقية الفرق.</p>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Mobile-friendly execution for housekeeping and maintenance</div>
+            <div class="footer-note">Pages 10-11</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="sheet">
+          <div class="topbar">
+            <div class="kicker">Operating Standards</div>
+            <div class="page-no">10</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>8. معايير التشغيل السريع</h2>
+              <p>القسم الأخير يلخص أفضل السلوكيات العملية عند استخدام النظام يوميًا، بحيث يصبح الدليل مرجعًا تشغيليًا لا مجرد شرح للواجهات.</p>
+            </div>
+          </div>
+          <div class="table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th>المجال</th>
+                  <th>المعيار المقترح</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>بداية اليوم</td>
+                  <td>ابدأ من لوحة القيادة أو من المسار الميداني بحسب دورك، ثم انتقل إلى الصفحات التفصيلية.</td>
+                </tr>
+                <tr>
+                  <td>الوحدات</td>
+                  <td>راجع يوميًا الوحدات غير المكتملة التغطية أو التي علقت في حالات غير منطقية.</td>
+                </tr>
+                <tr>
+                  <td>الحجوزات</td>
+                  <td>احرص على تحديث حالة الحجز من خلال أزرار الإجراء النظامية بدل التعديل غير المباشر.</td>
+                </tr>
+                <tr>
+                  <td>العملاء</td>
+                  <td>وثق أسباب الإدراج في القائمة السوداء بدقة لأن هذه البيانات تؤثر على قرارات لاحقة.</td>
+                </tr>
+                <tr>
+                  <td>العمليات</td>
+                  <td>كل طلب ميداني يجب أن يتحول إلى مهمة أو تذكرة داخل النظام، لا إلى رسالة خارجية فقط.</td>
+                </tr>
+                <tr>
+                  <td>المالية</td>
+                  <td>فرّق بين مصروف تشغيلي وقيْد محاسبي، وراجع العقود وكشوف الملاك دوريًا.</td>
+                </tr>
+                <tr>
+                  <td>الأمان</td>
+                  <td>غيّر كلمات المرور عند تبدل المسؤوليات، وراجع الأدوار عند نقل الموظفين بين الفرق.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <h3>خلاصة الدليل</h3>
+            <p>
+              CRM Hotel ليس مجرد واجهة لإدخال البيانات. هو منصة تشغيل مترابطة: تبدأ من تعريف الوحدة، تمر بالحجز والضيف،
+              وتتوسع إلى المهام والتنفيذ الميداني والحوكمة المالية. استخدام الصفحات وفق دورها الصحيح هو ما يصنع الفارق.
+            </p>
+          </div>
+          <div class="footer">
+            <div class="footer-note">End of user guide</div>
+            <div class="footer-note">Operational reference</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

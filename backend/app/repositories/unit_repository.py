@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from app.repositories.base import BaseRepository
 from app.domain.models.unit import Unit, UnitStatus
+from app.domain.models.team import UnitTeamAssignment
 
 
 class UnitRepository(BaseRepository[Unit]):
@@ -16,6 +17,11 @@ class UnitRepository(BaseRepository[Unit]):
             selectinload(Unit.supervisor),
             selectinload(Unit.housekeeping_team),
             selectinload(Unit.maintenance_team),
+            selectinload(Unit.location_node),
+            selectinload(Unit.owner),
+            selectinload(Unit.management_entity),
+            selectinload(Unit.property_group),
+            selectinload(Unit.team_assignments).selectinload(UnitTeamAssignment.team),
         )
 
     async def get_by_code(self, code: str) -> Optional[Unit]:

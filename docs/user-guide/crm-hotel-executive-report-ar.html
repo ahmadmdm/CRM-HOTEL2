@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM Hotel Executive Report</title>
+    <style>
+      @font-face {
+        font-family: "Thmanyah Sans";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahsans/woff2/thmanyahsans-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Sans";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahsans/woff2/thmanyahsans-Medium.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Sans";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahsans/woff2/thmanyahsans-Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Serif Display";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Serif Display";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      :root {
+        --ink: #102238;
+        --muted: #61758a;
+        --warm: #f5efe8;
+        --paper: #fffcf8;
+        --panel: rgba(255, 255, 255, 0.82);
+        --line: rgba(16, 34, 56, 0.1);
+        --accent: #ff7a1a;
+        --accent-soft: rgba(255, 122, 26, 0.14);
+        --teal: #91d8cb;
+        --sky: #dcebf6;
+        --shadow: 0 26px 60px rgba(16, 34, 56, 0.12);
+        --radius-xl: 30px;
+        --radius-lg: 24px;
+        --radius-md: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Thmanyah Sans", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top right, rgba(255, 122, 26, 0.18), transparent 22%),
+          radial-gradient(circle at bottom left, rgba(145, 216, 203, 0.22), transparent 24%),
+          linear-gradient(180deg, #f4ede5 0%, #fffdf9 100%);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      .report {
+        width: 210mm;
+        margin: 0 auto;
+      }
+
+      .page {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        padding: 13mm;
+        display: flex;
+        flex-direction: column;
+        gap: 7mm;
+        page-break-after: always;
+        overflow: hidden;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      .shell {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 9mm;
+        border-radius: 36px;
+        background: var(--panel);
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .shell::before,
+      .shell::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        z-index: 0;
+      }
+
+      .shell::before {
+        width: 112mm;
+        height: 112mm;
+        top: -42mm;
+        inset-inline-end: -24mm;
+        background: radial-gradient(circle, rgba(255, 122, 26, 0.16), transparent 72%);
+      }
+
+      .shell::after {
+        width: 82mm;
+        height: 82mm;
+        bottom: -18mm;
+        inset-inline-start: -18mm;
+        background: radial-gradient(circle, rgba(145, 216, 203, 0.22), transparent 72%);
+      }
+
+      .shell > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .kicker,
+      .page-no,
+      .chip,
+      .mini-shot,
+      .stat,
+      .card,
+      .quote,
+      .timeline,
+      .matrix,
+      .footer-note {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.84);
+        box-shadow: var(--shadow);
+      }
+
+      .kicker,
+      .page-no,
+      .chip,
+      .footer-note {
+        box-shadow: none;
+      }
+
+      .kicker,
+      .page-no,
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+      }
+
+      .kicker {
+        align-self: flex-start;
+        padding: 7px 14px;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .page-no {
+        width: 14mm;
+        height: 14mm;
+        background: var(--ink);
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .topbar,
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: "Thmanyah Serif Display", serif;
+        line-height: 1.18;
+      }
+
+      h1 {
+        font-size: 31px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      h3 {
+        font-size: 18px;
+      }
+
+      p,
+      li,
+      td,
+      th {
+        font-size: 13px;
+        line-height: 1.9;
+      }
+
+      p,
+      li,
+      td {
+        color: var(--muted);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 8mm;
+        align-items: stretch;
+      }
+
+      .lead {
+        display: flex;
+        flex-direction: column;
+        gap: 5mm;
+      }
+
+      .lead p {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .hero-panel {
+        border-radius: var(--radius-xl);
+        padding: 7mm;
+        background: linear-gradient(155deg, rgba(16, 34, 56, 0.97), rgba(34, 63, 96, 0.95));
+        color: white;
+      }
+
+      .hero-panel p,
+      .hero-panel li,
+      .hero-panel .label {
+        color: rgba(255, 255, 255, 0.82);
+      }
+
+      .hero-panel ul {
+        margin: 0;
+        padding: 0 18px 0 0;
+      }
+
+      .metric-grid,
+      .card-grid,
+      .two-col,
+      .three-col {
+        display: grid;
+        gap: 4mm;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .two-col {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+
+      .three-col {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .stat,
+      .card,
+      .quote,
+      .timeline,
+      .matrix,
+      .mini-shot {
+        border-radius: var(--radius-lg);
+      }
+
+      .stat,
+      .card,
+      .quote,
+      .timeline,
+      .matrix {
+        padding: 5mm;
+      }
+
+      .stat strong,
+      .card strong {
+        display: block;
+        color: var(--ink);
+        font-size: 20px;
+        margin-bottom: 2mm;
+      }
+
+      .stat span,
+      .label,
+      .small {
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      .card ul,
+      .timeline ul {
+        margin: 0;
+        padding: 0 18px 0 0;
+      }
+
+      .card p,
+      .quote p,
+      .timeline p {
+        margin: 0;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 6mm;
+      }
+
+      .section-head p {
+        margin: 2mm 0 0;
+        max-width: 115mm;
+      }
+
+      .mini-shot {
+        overflow: hidden;
+        padding: 4mm;
+      }
+
+      .mini-shot img {
+        display: block;
+        width: 100%;
+        border-radius: 16px;
+      }
+
+      .caption {
+        display: flex;
+        justify-content: space-between;
+        gap: 3mm;
+        margin-top: 3mm;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.5mm;
+      }
+
+      .chip {
+        padding: 6px 10px;
+        font-size: 10.5px;
+        color: var(--ink);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 3mm 2mm;
+        text-align: start;
+        vertical-align: top;
+        border-bottom: 1px solid rgba(16, 34, 56, 0.08);
+      }
+
+      th {
+        color: var(--ink);
+        font-size: 12px;
+      }
+
+      .quote {
+        background: linear-gradient(135deg, rgba(255, 122, 26, 0.1), rgba(255, 255, 255, 0.88));
+      }
+
+      .timeline {
+        background: linear-gradient(180deg, rgba(220, 235, 246, 0.4), rgba(255, 255, 255, 0.9));
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 11mm 1fr;
+        gap: 3mm;
+        align-items: start;
+        padding: 2.5mm 0;
+      }
+
+      .timeline-item strong {
+        display: inline-flex;
+        width: 9mm;
+        height: 9mm;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        background: var(--ink);
+        color: white;
+        font-size: 10px;
+      }
+
+      .matrix td:first-child,
+      .matrix th:first-child {
+        width: 28%;
+      }
+
+      .footer-note {
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .cover-grid {
+        display: grid;
+        grid-template-columns: 1.08fr 0.92fr;
+        gap: 8mm;
+        align-items: center;
+        flex: 1;
+      }
+
+      .cover-shots {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4mm;
+      }
+
+      .cover-shots .mini-shot:nth-child(1) {
+        grid-column: span 2;
+      }
+
+      .badge-row {
+        display: flex;
+        gap: 3mm;
+        flex-wrap: wrap;
+      }
+
+      .accent {
+        color: var(--accent);
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="report">
+      <section class="page">
+        <div class="shell">
+          <div class="topbar">
+            <div class="kicker">CRM Hotel | Executive Report</div>
+            <div class="page-no">01</div>
+          </div>
+          <div class="cover-grid">
+            <div class="lead">
+              <div class="badge-row">
+                <div class="chip">A4 PDF</div>
+                <div class="chip">Arabic-First</div>
+                <div class="chip">Clay-Inspired Editorial</div>
+              </div>
+              <h1>
+                التقرير التنفيذي الشامل<br />
+                لجولات صفحات <span class="accent">CRM Hotel</span>
+              </h1>
+              <p>
+                وثيقة تنفيذية موجهة للإدارة والعمليات والمالية، تلخص بنية المنتج الحالية، وتغطي كل صفحة تشغيلية في
+                الواجهة، وتوضح كيف تتحول الرحلات اليومية من تسجيل الدخول إلى تشغيل الوحدات والمهام والصيانة والمالية.
+              </p>
+              <div class="hero-panel">
+                <div class="label">ما الذي تتضمنه هذه النسخة؟</div>
+                <ul>
+                  <li>جولة مركزة لكل صفحة أساسية في النظام مع الغرض والمخرجات التشغيلية.</li>
+                  <li>خريطة أدوار واضحة لمساحات العمل الإدارية والميدانية والمالية.</li>
+                  <li>تقييم جاهزية المنتج الحالية ونقاط القوة وفرص التحسين ذات الأولوية.</li>
+                </ul>
+              </div>
+              <div class="metric-grid">
+                <div class="stat"><strong>11</strong><span>صفحة ومسارًا تشغيليًا موثقًا</span></div>
+                <div class="stat"><strong>6</strong><span>أدوار وصول وصلاحيات تشغيلية</span></div>
+                <div class="stat"><strong>2</strong><span>واجهات ميدانية مخصصة للفرق</span></div>
+                <div class="stat"><strong>1</strong><span>رحلة تشغيل متكاملة من الدخول حتى الإقفال</span></div>
+              </div>
+            </div>
+            <div class="cover-shots">
+              <div class="mini-shot">
+                <img src="./screenshots/dashboard.png" alt="Dashboard" />
+                <div class="caption"><span>لوحة القيادة</span><span>Executive overview</span></div>
+              </div>
+              <div class="mini-shot">
+                <img src="./screenshots/finance.png" alt="Finance" />
+                <div class="caption"><span>المالية</span><span>Finance</span></div>
+              </div>
+              <div class="mini-shot">
+                <img src="./screenshots/operations.png" alt="Operations" />
+                <div class="caption"><span>العمليات</span><span>Operations</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Prepared from current frontend routes and live page capabilities in the codebase</div>
+            <div class="footer-note">May 2026</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="shell">
+          <div class="topbar">
+            <div class="kicker">Product Architecture</div>
+            <div class="page-no">02</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>خريطة النظام ومساحات العمل</h2>
+              <p>
+                المنتج مبني كمنصة متعددة الأدوار. بعض الصفحات تخدم القيادة والإدارة، وبعضها يخدم التنفيذ اليومي داخل
+                الفندق، بينما تنفصل واجهات التنظيف والصيانة إلى مسارات ميدانية أخف وأسرع.
+              </p>
+            </div>
+            <div class="chips">
+              <div class="chip">RTL + English</div>
+              <div class="chip">Role-based routing</div>
+              <div class="chip">Notifications ready</div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="timeline">
+              <h3>تدفق الرحلة التشغيلية</h3>
+              <div class="timeline-item"><strong>1</strong><p>تسجيل دخول آمن مع توجيه تلقائي حسب الدور.</p></div>
+              <div class="timeline-item"><strong>2</strong><p>الوصول إلى لوحة القيادة أو مساحة العمل المخصصة للفريق.</p></div>
+              <div class="timeline-item"><strong>3</strong><p>إدارة المخزون التشغيلي عبر الوحدات والحجوزات والعملاء.</p></div>
+              <div class="timeline-item"><strong>4</strong><p>تحويل الاحتياجات إلى مهام تنظيف أو تذاكر صيانة قابلة للتتبع.</p></div>
+              <div class="timeline-item"><strong>5</strong><p>متابعة الإيراد والمصروفات والفواتير والقيود المحاسبية والعقود.</p></div>
+              <div class="timeline-item"><strong>6</strong><p>إغلاق الحلقة عبر المستخدمين والأمان والتنبيهات والواجهات الميدانية.</p></div>
+            </div>
+            <div class="quote">
+              <h3>الأدوار الرئيسية</h3>
+              <p>
+                <strong>Super Admin</strong> يقود التحكم الكامل. <strong>Sub Admin</strong> يدير التشغيل اليومي.
+                <strong>Financial</strong> يركز على المحاسبة والعقود والتقارير. <strong>Operations</strong> يخلق المهام
+                ويتابعها. <strong>Housekeeping</strong> و<strong>Maintenance</strong> يعملان في واجهات ميدانية مبسطة.
+              </p>
+            </div>
+          </div>
+          <div class="matrix">
+            <table>
+              <thead>
+                <tr>
+                  <th>المساحة</th>
+                  <th>الصفحات</th>
+                  <th>القيمة التشغيلية</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>الدخول والقيادة</td>
+                  <td>Login, Dashboard</td>
+                  <td>التحقق، التوجيه، ومراقبة الأداء التشغيلي والاشغال.</td>
+                </tr>
+                <tr>
+                  <td>إدارة المخزون والعملاء</td>
+                  <td>Units, Bookings, Customers</td>
+                  <td>ضبط الأصول، الحركة اليومية، والمرجعية المرتبطة بالضيف.</td>
+                </tr>
+                <tr>
+                  <td>تنفيذ الخدمات</td>
+                  <td>Operations, Housekeeping, Maintenance</td>
+                  <td>تخصيص المهام، إدارة الأولويات، وتنفيذ العمل الميداني.</td>
+                </tr>
+                <tr>
+                  <td>الحوكمة المالية والإدارية</td>
+                  <td>Finance, Users, Account</td>
+                  <td>القيود، العقود، الفواتير، إدارة المستخدمين، وأمن الحساب.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="footer">
+            <div class="footer-note">The product already behaves like an operating system for hotel teams, not a collection of disconnected forms.</div>
+            <div class="footer-note">Page map</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="shell">
+          <div class="topbar">
+            <div class="kicker">Page Walkthrough I</div>
+            <div class="page-no">03</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>الصفحات التي تبني الصورة اليومية</h2>
+              <p>هذه الصفحات تشكل نقطة الانطلاق والإشراف واتخاذ القرار في التشغيل، وتربط بين السعة، الحركة، والضيف.</p>
+            </div>
+          </div>
+          <div class="card-grid">
+            <article class="card">
+              <h3>تسجيل الدخول</h3>
+              <p>بوابة موحدة لجميع المستخدمين مع تحقق حقول، إظهار وإخفاء كلمة المرور، ورسائل خطأ ثنائية اللغة.</p>
+              <ul>
+                <li>توجيه تلقائي إلى `/housekeeping` أو `/maintenance` أو `/finance` أو لوحة التحكم العامة.</li>
+                <li>ملائم كنقطة بداية موحدة للهواتف وسطح المكتب.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>لوحة القيادة</h3>
+              <p>واجهة رقابية تعرض إجمالي الوحدات، نسب الإشغال، التوزيع حسب الحالة، وآخر الحجوزات المؤثرة على التشغيل.</p>
+              <ul>
+                <li>بطاقات مؤشرات تنفيذية سهلة القراءة.</li>
+                <li>مخطط إشغال ومكوّن استرداد عند الفشل في التحميل.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>الوحدات</h3>
+              <p>صفحة ثرية لإدارة الأصل التشغيلي نفسه: بيانات الوحدة، حالتها، وتغطيتها بفريق الإشراف والتنظيف والصيانة.</p>
+              <ul>
+                <li>إنشاء وحدات، بحث، تصفية، وانتقالات حالة مدروسة.</li>
+                <li>إسناد فردي وجماعي مع تأكيدات قبل الاستبدال أو التفريغ.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>الحجوزات</h3>
+              <p>يربط الوحدة بالضيف وبالزمن، ويحول المخزون الثابت إلى حركة يومية قابلة للقياس والإيراد.</p>
+              <ul>
+                <li>إنشاء حجز مع قناة الحجز وعدد الضيوف والتكلفة الكلية.</li>
+                <li>تسجيل دخول، تسجيل خروج، وإلغاء مع مؤشرات حالة واضحة.</li>
+              </ul>
+            </article>
+          </div>
+          <div class="three-col">
+            <div class="mini-shot">
+              <img src="./screenshots/login.png" alt="Login page" />
+              <div class="caption"><span>الدخول</span><span>Secure gateway</span></div>
+            </div>
+            <div class="mini-shot">
+              <img src="./screenshots/dashboard.png" alt="Dashboard page" />
+              <div class="caption"><span>القيادة</span><span>Executive view</span></div>
+            </div>
+            <div class="mini-shot">
+              <img src="./screenshots/units.png" alt="Units page" />
+              <div class="caption"><span>الوحدات</span><span>Inventory control</span></div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Core operating surface</div>
+            <div class="footer-note">Login to bookings</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="shell">
+          <div class="topbar">
+            <div class="kicker">Page Walkthrough II</div>
+            <div class="page-no">04</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>الصفحات التي تدفع التنفيذ للأمام</h2>
+              <p>من بيانات العميل إلى المهام، ومن التذاكر إلى المتابعة الميدانية، هنا يتحول العمل من تسجيل إلى إنجاز.</p>
+            </div>
+          </div>
+          <div class="card-grid">
+            <article class="card">
+              <h3>العملاء</h3>
+              <p>مرجع موحد لبيانات الضيوف مع إمكانات البحث والقوائم السوداء وأسبابها، بما يحفظ الاستمرارية والامتثال.</p>
+              <ul>
+                <li>إنشاء عميل، البحث بالاسم أو الهاتف، وتصفية العملاء المحظورين.</li>
+                <li>إدارة الحظر والإزالة مع سبب واضح وقابل للمراجعة.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>العمليات</h3>
+              <p>صفحة مزدوجة تجمع مهام التنظيف وتذاكر الصيانة، وتربط الوحدة بالمشكلة وبالشخص المسؤول عن التنفيذ.</p>
+              <ul>
+                <li>إنشاء مهمة تنظيف، وإنشاء تذكرة صيانة مع أولوية مفصلة.</li>
+                <li>تحديث حالات التذاكر من مفتوحة حتى مغلقة.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>التنظيف</h3>
+              <p>واجهة ميدانية خفيفة ومهيأة للموبايل تعرض فقط المهام المسندة للمستخدم الحالي مع تحديثات دورية سريعة.</p>
+              <ul>
+                <li>فصل بين المهام المعلقة والمكتملة.</li>
+                <li>تنفيذ فوري بزر واحد لتسجيل الإنجاز.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>الصيانة</h3>
+              <p>واجهة ميدانية تركز على التذاكر الموكلة للعامل، مع إبراز الأولوية وإتاحة نقل الحالة خلال التنفيذ.</p>
+              <ul>
+                <li>عرض التذاكر المفتوحة والجارية مع أكواد لونية للأولوية.</li>
+                <li>مزامنة حالة التذكرة بشكل مستمر مع النظام المركزي.</li>
+              </ul>
+            </article>
+          </div>
+          <div class="two-col">
+            <div class="mini-shot">
+              <img src="./screenshots/operations.png" alt="Operations page" />
+              <div class="caption"><span>العمليات</span><span>Task orchestration</span></div>
+            </div>
+            <div class="mini-shot">
+              <img src="./screenshots/housekeeping.png" alt="Housekeeping page" />
+              <div class="caption"><span>التنظيف</span><span>Field execution</span></div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Field execution loop</div>
+            <div class="footer-note">Customer to task</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="shell">
+          <div class="topbar">
+            <div class="kicker">Governance & Finance</div>
+            <div class="page-no">05</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>الحوكمة المالية والإدارية</h2>
+              <p>
+                الجانب الأهم في نضج المنتج أنه لا يتوقف عند التشغيل، بل يمتد إلى الإدارة المالية، العقود، الحسابات،
+                والمستخدمين، وهو ما يرفع النظام من أداة متابعة إلى منصة تشغيل مؤسسية.
+              </p>
+            </div>
+          </div>
+          <div class="card-grid">
+            <article class="card">
+              <h3>المالية</h3>
+              <p>تجميع قوي بين الملخصات، الإيرادات، المصروفات، الفواتير، القيود اليدوية، ميزان المراجعة، والعقود.</p>
+              <ul>
+                <li>إدارة مصروفات مرتبطة بوحدة وفئة وتاريخ.</li>
+                <li>إنشاء قيود محاسبية يدوية ومراجعة الحسابات حسب النوع.</li>
+                <li>إنشاء عقود إدارة وربطها بالمالك والجهة المديرة والوحدة.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>المستخدمون</h3>
+              <p>مركز التحكم في الهويات والأدوار، مع إمكانات إنشاء وتعديل وحذف وتتبع التغطية التشغيلية على مستوى الوحدات.</p>
+              <ul>
+                <li>ستة أدوار تشغيلية واضحة.</li>
+                <li>رؤية مباشرة للوحدات التي يغطيها كل مستخدم إشرافًا أو تنظيفًا أو صيانة.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>الحساب والأمان</h3>
+              <p>تجربة مباشرة لتغيير كلمة المرور مع تحقق دقيق، وتسجيل خروج إجباري بعد التحديث لحماية الجلسة.</p>
+              <ul>
+                <li>منع إعادة استخدام كلمة المرور الحالية.</li>
+                <li>مطابقة التأكيد ورسائل تفصيلية ثنائية اللغة.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>التنبيهات واللغة والثيم</h3>
+              <p>قدرات مشتركة ترفع جودة الاستخدام: تبديل اللغة، تهيئة التنبيهات، البحث السريع داخل الصفحات، وتبديل النمط.</p>
+              <ul>
+                <li>جاهزية OneSignal للتنبيهات المتصفح.</li>
+                <li>دعم عربي RTL وإنجليزي عبر كامل التجربة.</li>
+              </ul>
+            </article>
+          </div>
+          <div class="three-col">
+            <div class="mini-shot">
+              <img src="./screenshots/finance.png" alt="Finance page" />
+              <div class="caption"><span>المالية</span><span>Finance</span></div>
+            </div>
+            <div class="mini-shot">
+              <img src="./screenshots/users.png" alt="Users page" />
+              <div class="caption"><span>المستخدمون</span><span>User governance</span></div>
+            </div>
+            <div class="mini-shot">
+              <img src="./screenshots/account.png" alt="Account page" />
+              <div class="caption"><span>الأمان</span><span>Security</span></div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="footer-note">Enterprise maturity layer</div>
+            <div class="footer-note">Finance and governance</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="shell">
+          <div class="topbar">
+            <div class="kicker">Assessment</div>
+            <div class="page-no">06</div>
+          </div>
+          <div class="section-head">
+            <div>
+              <h2>الخلاصة التنفيذية والتوصيات</h2>
+              <p>
+                المنتج الحالي متقدم في تغطية دورة العمل الفندقي، ويتميز بفصل ذكي بين العمل الإداري والعمل الميداني. أكثر
+                نقاط القوة وضوحًا هي الترابط بين الوحدات والحجوزات والعمليات والمالية ضمن واجهة موحدة وقابلة للتوسع.
+              </p>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="quote">
+              <h3>نقاط القوة الحالية</h3>
+              <ul>
+                <li>هيكل أدوار واضح مع توجيه تلقائي بعد الدخول.</li>
+                <li>صفحة وحدات غنية تسمح بإدارة التغطية والحالة بشكل عملي.</li>
+                <li>وحدة مالية متقدمة مقارنة بنطاق الكثير من أنظمة التشغيل الفندقي المتوسطة.</li>
+                <li>واجهات ميدانية مبسطة ومحدثة دوريًا للفرق التنفيذية.</li>
+              </ul>
+            </div>
+            <div class="timeline">
+              <h3>أولويات موصى بها للنسخة القادمة</h3>
+              <div class="timeline-item"><strong>1</strong><p>إضافة أدلة سياقية داخل المنتج لعمليات الإسناد الجماعي والانتقالات الحساسة.</p></div>
+              <div class="timeline-item"><strong>2</strong><p>رفع توثيق دورة العقود والمحاسبة إلى مستوى تشغيلي تفصيلي للفرق المالية.</p></div>
+              <div class="timeline-item"><strong>3</strong><p>توسيع لقطات الشاشات الميدانية، خصوصًا الصيانة، ضمن المواد التسويقية والتدريبية.</p></div>
+              <div class="timeline-item"><strong>4</strong><p>تطوير مؤشرات أداء إضافية للإدارة مثل زمن إغلاق التذاكر ومعدل تنظيف ما بعد الخروج.</p></div>
+            </div>
+          </div>
+          <div class="matrix">
+            <table>
+              <thead>
+                <tr>
+                  <th>المحور</th>
+                  <th>الوضع الحالي</th>
+                  <th>الأثر</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>تغطية الصفحات</td>
+                  <td>مكتملة عبر 11 صفحة تشغيلية فعلية</td>
+                  <td>يسهل تقديم النظام والتدريب عليه دون فجوات وظيفية.</td>
+                </tr>
+                <tr>
+                  <td>نضج العمليات</td>
+                  <td>مرتفع بفضل الربط بين الوحدات والحجوزات والعمليات</td>
+                  <td>يخفض العمل اليدوي والتنسيق خارج النظام.</td>
+                </tr>
+                <tr>
+                  <td>النضج المالي</td>
+                  <td>أعلى من المتوقع بوجود المحاسبة والعقود</td>
+                  <td>يدعم التوسع إلى تقارير ملكية وإدارة أكثر صرامة.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="footer">
+            <div class="footer-note">This report is paired with a separate detailed user guide covering every page step by step.</div>
+            <div class="footer-note">Executive close</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

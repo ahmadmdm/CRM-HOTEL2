@@ -12,6 +12,7 @@ from app.domain.models.operation import CleaningTask
 from app.domain.schemas.booking import (
     BookingCreate, BookingUpdate, BookingCheckIn, BookingCheckOut, BookingPaymentUpdate
 )
+from app.services.invoice_service import InvoiceService
 
 
 class BookingService:
@@ -101,6 +102,10 @@ class BookingService:
         unit.status = UnitStatus.WAITING_CLEANING
         cleaning_task = CleaningTask(unit_id=booking.unit_id, booking_id=booking.id)
         self.session.add(cleaning_task)
+        await InvoiceService(self.session).generate_customer_invoice_from_booking(
+            booking.id,
+            commit=False,
+        )
 
         await self.repo.commit()
         return await self._get_booking(booking.id)

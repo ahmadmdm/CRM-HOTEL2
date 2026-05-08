@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Executive Presentation | CRM Hotel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #0d1b2a;
+        --ink: #16263a;
+        --muted: #667788;
+        --sand: #f4ede4;
+        --paper: #fffaf5;
+        --accent: #ff7b23;
+        --mint: #b8efe1;
+        --sky: #d9eef8;
+        --line: rgba(13, 27, 42, 0.08);
+        --shadow: 0 24px 70px rgba(13, 27, 42, 0.13);
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "IBM Plex Sans Arabic", "Manrope", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(255, 123, 35, 0.16), transparent 26%),
+          radial-gradient(circle at bottom right, rgba(109, 193, 221, 0.18), transparent 22%),
+          linear-gradient(180deg, #f5eee6 0%, #fffdfa 100%);
+        color: var(--ink);
+      }
+
+      .deck {
+        width: 100%;
+      }
+
+      .slide {
+        width: 100%;
+        height: 210mm;
+        padding: 14mm 16mm;
+        page-break-after: always;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .slide:last-child {
+        page-break-after: auto;
+      }
+
+      .frame {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 34px;
+        background: rgba(255, 255, 255, 0.76);
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        box-shadow: var(--shadow);
+        padding: 12mm;
+        backdrop-filter: blur(10px);
+      }
+
+      .frame::before,
+      .frame::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        z-index: 0;
+      }
+
+      .frame::before {
+        width: 120mm;
+        height: 120mm;
+        inset-inline-start: -35mm;
+        top: -30mm;
+        background: radial-gradient(circle, rgba(255, 123, 35, 0.16), transparent 70%);
+      }
+
+      .frame::after {
+        width: 85mm;
+        height: 85mm;
+        inset-inline-end: -10mm;
+        bottom: -12mm;
+        background: radial-gradient(circle, rgba(109, 193, 221, 0.18), transparent 70%);
+      }
+
+      .frame > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5mm;
+      }
+
+      .brandline,
+      .slide-tag,
+      .stat,
+      .note,
+      .shot,
+      .mini-card,
+      .highlight,
+      .footer-chip {
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: var(--shadow);
+      }
+
+      .brandline,
+      .slide-tag,
+      .footer-chip {
+        box-shadow: none;
+      }
+
+      .brandline {
+        padding: 3mm 5mm;
+        font-size: 10.5px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .slide-tag {
+        width: 15mm;
+        height: 15mm;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--navy);
+        color: white;
+        font-family: "Manrope", sans-serif;
+        font-size: 11px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 9mm;
+        height: calc(100% - 18mm);
+      }
+
+      .hero h1,
+      .section-title h2 {
+        margin: 0;
+        font-family: "Manrope", "IBM Plex Sans Arabic", sans-serif;
+        line-height: 1.16;
+      }
+
+      .hero h1 {
+        font-size: 27px;
+      }
+
+      .section-title h2 {
+        font-size: 21px;
+      }
+
+      .subtitle,
+      .section-title p,
+      .copy,
+      li {
+        color: var(--muted);
+      }
+
+      .subtitle,
+      .section-title p,
+      .copy {
+        line-height: 1.8;
+      }
+
+      .subtitle {
+        margin: 5mm 0 0;
+        font-size: 13px;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 6mm;
+      }
+
+      .lead-card {
+        padding: 7mm;
+        background: linear-gradient(135deg, rgba(13, 27, 42, 0.96), rgba(28, 54, 82, 0.94));
+        color: white;
+        border-radius: 28px;
+      }
+
+      .lead-card h3,
+      .lead-card p,
+      .lead-card li {
+        color: white;
+      }
+
+      .lead-card p,
+      .lead-card li {
+        opacity: 0.88;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4mm;
+      }
+
+      .stat {
+        padding: 4mm;
+      }
+
+      .stat strong {
+        display: block;
+        font-family: "Manrope", sans-serif;
+        font-size: 16px;
+        margin-bottom: 1.5mm;
+      }
+
+      .stat span {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .shot {
+        padding: 4mm;
+        overflow: hidden;
+      }
+
+      .shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 20px;
+        display: block;
+        background: linear-gradient(180deg, rgba(244, 237, 228, 0.88), rgba(255, 255, 255, 0.96));
+      }
+
+      .section-grid {
+        display: grid;
+        grid-template-columns: 0.86fr 1.14fr;
+        gap: 8mm;
+        height: calc(100% - 20mm);
+        align-items: start;
+      }
+
+      .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8mm;
+        margin-bottom: 4mm;
+      }
+
+      .dual {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5mm;
+      }
+
+      .note,
+      .mini-card,
+      .highlight {
+        padding: 5.5mm;
+      }
+
+      .lang {
+        padding: 5mm;
+        border-radius: 22px;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(244, 237, 228, 0.9));
+      }
+
+      .lang.english {
+        direction: ltr;
+        text-align: left;
+      }
+
+      .lang h4 {
+        margin: 0 0 2.5mm;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      ul {
+        margin: 0;
+        padding-inline-start: 4.5mm;
+      }
+
+      li {
+        margin-bottom: 2mm;
+        font-size: 11.5px;
+        line-height: 1.75;
+      }
+
+      .copy {
+        margin: 0;
+        font-size: 11.8px;
+      }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4mm;
+      }
+
+      .mini-card strong {
+        display: block;
+        margin-bottom: 2mm;
+        font-size: 13px;
+      }
+
+      .mini-card span {
+        display: block;
+        font-size: 11px;
+        line-height: 1.75;
+        color: var(--muted);
+      }
+
+      .two-shots {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5mm;
+      }
+
+      .footer-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 4mm;
+        align-items: center;
+      }
+
+      .footer-chip {
+        padding: 2.5mm 4mm;
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .priority-list {
+        display: grid;
+        gap: 3mm;
+      }
+
+      .priority {
+        display: grid;
+        grid-template-columns: 10mm 1fr;
+        gap: 4mm;
+        align-items: start;
+        padding: 4mm;
+        border-radius: 18px;
+        background: rgba(255, 123, 35, 0.07);
+        border: 1px solid rgba(255, 123, 35, 0.12);
+      }
+
+      .priority strong {
+        width: 10mm;
+        height: 10mm;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--accent);
+        color: white;
+        font-size: 10px;
+        font-family: "Manrope", sans-serif;
+      }
+
+      .priority div {
+        font-size: 11.4px;
+        line-height: 1.8;
+        color: var(--ink);
+      }
+
+      .dark {
+        background: linear-gradient(135deg, #0d1b2a, #1d3955);
+      }
+
+      .dark::before {
+        background: radial-gradient(circle, rgba(255, 123, 35, 0.18), transparent 70%);
+      }
+
+      .dark::after {
+        background: radial-gradient(circle, rgba(109, 193, 221, 0.16), transparent 70%);
+      }
+
+      .dark .brandline,
+      .dark .slide-tag,
+      .dark .footer-chip,
+      .dark .note,
+      .dark .mini-card,
+      .dark .highlight,
+      .dark .shot,
+      .dark .lang {
+        background: rgba(255,255,255,0.08);
+        border-color: rgba(255,255,255,0.12);
+        color: white;
+      }
+
+      .dark .brandline,
+      .dark .footer-chip,
+      .dark .copy,
+      .dark li,
+      .dark .section-title p,
+      .dark .mini-card span {
+        color: rgba(255,255,255,0.82);
+      }
+
+      .dark h1,
+      .dark h2,
+      .dark h3,
+      .dark strong,
+      .dark .section-title,
+      .dark .mini-card strong {
+        color: white;
+      }
+
+      .dark .slide-tag {
+        background: rgba(255,255,255,0.14);
+      }
+
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+
+        .brandline,
+        .slide-tag,
+        .stat,
+        .note,
+        .shot,
+        .mini-card,
+        .highlight,
+        .footer-chip,
+        .frame {
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck">
+      <section class="slide">
+        <div class="frame dark">
+          <div class="topbar">
+            <div class="brandline">CRM HOTEL | EXECUTIVE PRESENTATION</div>
+            <div class="slide-tag">01</div>
+          </div>
+          <div class="hero">
+            <div class="stack">
+              <div>
+                <h1>عرض تنفيذي فخم<br />لنظام إدارة الوحدات والحجوزات والمالية</h1>
+                <p class="subtitle">
+                  Bilingual meeting-ready deck crafted from the live product interface, designed for leadership reviews,
+                  onboarding sessions, and stakeholder presentations.
+                </p>
+              </div>
+              <div class="lead-card">
+                <h3>لماذا هذا العرض؟</h3>
+                <p>
+                  يقدّم هذا الملف نسخة مختصرة ومرئية من الدليل التشغيلي، بأسلوب عرض أنيق يناسب الإدارة التنفيذية
+                  والاجتماعات مع الشركاء والفرق الداخلية.
+                </p>
+              </div>
+              <div class="hero-stats">
+                <div class="stat"><strong>10</strong><span>Live system screenshots</span></div>
+                <div class="stat"><strong>AR/EN</strong><span>Dual-language narrative</span></div>
+                <div class="stat"><strong>16:9</strong><span>Presentation-ready layout</span></div>
+              </div>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/dashboard.png" alt="Dashboard" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="frame">
+          <div class="topbar">
+            <div class="brandline">ENTRY EXPERIENCE</div>
+            <div class="slide-tag">02</div>
+          </div>
+          <div class="section-title">
+            <div>
+              <h2>تجربة دخول واضحة ومسارات حسب الدور</h2>
+              <p>تبدأ الرحلة من شاشة دخول نظيفة ثم يتحول كل مستخدم تلقائيًا إلى مساحة العمل المناسبة له.</p>
+            </div>
+          </div>
+          <div class="section-grid">
+            <div class="shot">
+              <img src="./screenshots/login.png" alt="Login" />
+            </div>
+            <div class="stack">
+              <div class="dual">
+                <div class="lang arabic">
+                  <h4>Arabic</h4>
+                  <ul>
+                    <li>واجهة دخول بسيطة تعطي انطباعًا مؤسسيًا واضحًا.</li>
+                    <li>التوجيه التلقائي بعد الدخول يقلل الأخطاء ويختصر الزمن.</li>
+                    <li>تبديل اللغة متاح مباشرة من الشاشة الأولى.</li>
+                  </ul>
+                </div>
+                <div class="lang english">
+                  <h4>English</h4>
+                  <ul>
+                    <li>A clean first-touch experience improves clarity and confidence.</li>
+                    <li>Automatic post-login routing reduces friction and role confusion.</li>
+                    <li>Language switching is available from the very first screen.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="priority-list">
+                <div class="priority"><strong>1</strong><div>Use this slide when introducing the system to new staff or external stakeholders.</div></div>
+                <div class="priority"><strong>2</strong><div>ركز على أن التجربة لا تبدأ من قاعدة بيانات أو تقارير، بل من بوابة وصول موجهة بحسب الدور.</div></div>
+                <div class="priority"><strong>3</strong><div>Highlight that security, role routing, and usability all begin at sign-in.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="frame">
+          <div class="topbar">
+            <div class="brandline">EXECUTIVE CONTROL</div>
+            <div class="slide-tag">03</div>
+          </div>
+          <div class="section-title">
+            <div>
+              <h2>لوحة قيادة واحدة لمشهد تشغيلي كامل</h2>
+              <p>الشاشة الرئيسية تمنح الإدارة قراءة لحظية للأداء والحالة التشغيلية ومسارات التنقل السريع.</p>
+            </div>
+          </div>
+          <div class="section-grid">
+            <div class="stack">
+              <div class="note">
+                <p class="copy">
+                  The dashboard functions as an executive command center. It condenses occupancy, operational readiness, financial context, and navigation shortcuts into one visual decision surface.
+                </p>
+              </div>
+              <div class="mini-grid">
+                <div class="mini-card"><strong>Visibility</strong><span>رؤية فورية للحالة العامة بدون التنقل بين أقسام متعددة.</span></div>
+                <div class="mini-card"><strong>Speed</strong><span>Quick search and navigation reduce daily management latency.</span></div>
+                <div class="mini-card"><strong>Consistency</strong><span>المؤشرات متصلة بمسارات العمل نفسها، لا بمجرّد طبقة عرض منفصلة.</span></div>
+                <div class="mini-card"><strong>Confidence</strong><span>Leadership can enter meetings with the live operational picture in seconds.</span></div>
+              </div>
+            </div>
+            <div class="shot">
+              <img src="./screenshots/dashboard.png" alt="Dashboard" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="frame">
+          <div class="topbar">
+            <div class="brandline">INVENTORY & REVENUE FLOW</div>
+            <div class="slide-tag">04</div>
+          </div>
+          <div class="section-title">
+            <div>
+              <h2>الوحدات والحجوزات: إدارة المخزون والحركة الفعلية</h2>
+              <p>تعكس الوحدات حالة الأصل التشغيلي، بينما توضح الحجوزات كيفية استثماره فعليًا.</p>
+            </div>
+          </div>
+          <div class="two-shots" style="margin-bottom: 6mm; height: 90mm;">
+            <div class="shot"><img src="./screenshots/units.png" alt="Units" /></div>
+            <div class="shot"><img src="./screenshots/bookings.png" alt="Bookings" /></div>
+          </div>
+          <div class="dual">
+            <div class="lang arabic">
+              <h4>Arabic</h4>
+              <ul>
+                <li>راقب حالة كل وحدة: جاهزة، مشغولة، محجوزة، أو بحاجة إلى تدخل.</li>
+                <li>استخدم شاشة الحجوزات لفهم الحركة التجارية اليومية وربطها بالوحدات الفعلية.</li>
+                <li>هذا الثنائي يربط الإدارة التشغيلية مباشرة بالإيراد.</li>
+              </ul>
+            </div>
+            <div class="lang english">
+              <h4>English</h4>
+              <ul>
+                <li>Units represent operational inventory and readiness status.</li>
+                <li>Bookings represent commercial activity and occupancy movement.</li>
+                <li>Together, they connect asset control directly to revenue execution.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="frame">
+          <div class="topbar">
+            <div class="brandline">CUSTOMER & OPERATIONS LOOP</div>
+            <div class="slide-tag">05</div>
+          </div>
+          <div class="section-title">
+            <div>
+              <h2>من العميل إلى الطلب التشغيلي</h2>
+              <p>عندما يتحول حدث عميل أو حجز إلى عمل ميداني، تنتقل المنصة من الإدارة إلى التنفيذ بدون انقطاع.</p>
+            </div>
+          </div>
+          <div class="two-shots" style="margin-bottom: 6mm; height: 88mm;">
+            <div class="shot"><img src="./screenshots/customers.png" alt="Customers" /></div>
+            <div class="shot"><img src="./screenshots/operations.png" alt="Operations" /></div>
+          </div>
+          <div class="highlight">
+            <p class="copy">
+              The system is not just a record manager. It turns real operational context into executable cleaning and maintenance actions, then routes those actions to the right person with accountability and notification support.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="frame">
+          <div class="topbar">
+            <div class="brandline">FINANCE, USERS, SECURITY</div>
+            <div class="slide-tag">06</div>
+          </div>
+          <div class="section-title">
+            <div>
+              <h2>الحوكمة الداخلية: المالية والمستخدمون والحساب</h2>
+              <p>الطبقة الإدارية لا تكتمل من دون رقابة مالية واضحة وإدارة صلاحيات متماسكة.</p>
+            </div>
+          </div>
+          <div class="two-shots" style="margin-bottom: 6mm; height: 72mm;">
+            <div class="shot"><img src="./screenshots/finance.png" alt="Finance" /></div>
+            <div class="shot"><img src="./screenshots/users.png" alt="Users" /></div>
+          </div>
+          <div class="section-grid" style="grid-template-columns: 1.1fr 0.9fr; height: 42mm;">
+            <div class="note">
+              <p class="copy">
+                Finance supports leadership visibility, Users controls access design, and Account & Security protects trust in the platform. These three views create the governance layer of the system.
+              </p>
+            </div>
+            <div class="shot"><img src="./screenshots/account.png" alt="Account" /></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="frame">
+          <div class="topbar">
+            <div class="brandline">FIELD TEAM EXPERIENCE</div>
+            <div class="slide-tag">07</div>
+          </div>
+          <div class="section-title">
+            <div>
+              <h2>تجربة الفريق الميداني: مهام مباشرة وإشعارات جاهزة</h2>
+              <p>بعد الإسناد من شاشة العمليات، تظهر المهمة مباشرة في واجهة الموظف المعني وتصبح المنصة جاهزة للتنبيه الفوري.</p>
+            </div>
+          </div>
+          <div class="section-grid">
+            <div class="shot">
+              <img src="./screenshots/housekeeping.png" alt="Housekeeping" />
+            </div>
+            <div class="stack">
+              <div class="dual">
+                <div class="lang arabic">
+                  <h4>Arabic</h4>
+                  <ul>
+                    <li>يشاهد فريق التنظيف قائمة المهام المعلقة مباشرة من واجهته الخاصة.</li>
+                    <li>يسمح تصميم المسار بعزل تجربة الموظف عن تعقيد الواجهة الإدارية.</li>
+                    <li>الإشعارات ترفع سرعة الاستجابة وتقلل الاعتماد على المتابعة اليدوية.</li>
+                  </ul>
+                </div>
+                <div class="lang english">
+                  <h4>English</h4>
+                  <ul>
+                    <li>Field staff receive a focused task list without admin-side complexity.</li>
+                    <li>Assignments appear as real operational workload, not abstract records.</li>
+                    <li>Notification readiness improves execution speed and accountability.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="priority-list">
+                <div class="priority"><strong>1</strong><div>Enable browser notifications for team members who need instant task delivery.</div></div>
+                <div class="priority"><strong>2</strong><div>استخدم هذه الشريحة لشرح الفرق بين الإدارة المركزية والتنفيذ الميداني.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="frame dark">
+          <div class="topbar">
+            <div class="brandline">CLOSING SUMMARY</div>
+            <div class="slide-tag">08</div>
+          </div>
+          <div class="hero" style="grid-template-columns: 1fr 1fr;">
+            <div class="stack">
+              <div>
+                <h1>رسالة العرض</h1>
+                <p class="subtitle">
+                  The platform unifies units, bookings, customers, finance, operations, and notifications into one operational system with role-based journeys and meeting-ready visibility.
+                </p>
+              </div>
+              <div class="dual">
+                <div class="mini-card"><strong>Unified</strong><span>نظام واحد بدل أدوات متفرقة.</span></div>
+                <div class="mini-card"><strong>Actionable</strong><span>بيانات تتحول إلى تنفيذ ميداني مباشر.</span></div>
+                <div class="mini-card"><strong>Governed</strong><span>صلاحيات، حسابات، وأمان في طبقة واحدة.</span></div>
+                <div class="mini-card"><strong>Presentable</strong><span>واجهة قوية بما يكفي للعرض التشغيلي والإداري.</span></div>
+              </div>
+            </div>
+            <div class="stack">
+              <div class="note">
+                <p class="copy">
+                  Recommended use: leadership meetings, client demos, onboarding sessions, partner presentations, and internal operations reviews.
+                </p>
+              </div>
+              <div class="footer-row">
+                <div class="footer-chip">Arabic / English executive deck</div>
+                <div class="footer-chip">Built from live CRM screens</div>
+                <div class="footer-chip">Ready for PDF presentation</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

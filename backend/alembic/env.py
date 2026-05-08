@@ -18,6 +18,16 @@ from app.domain.models.booking import Booking
 from app.domain.models.customer import Customer
 from app.domain.models.finance import RevenueRecord, ExpenseRecord
 from app.domain.models.operation import CleaningTask, MaintenanceTicket
+from app.domain.models.accounting import Account, JournalEntry, JournalLine
+from app.domain.models.invoice import Invoice, InvoiceLine, InvoicePayment, InvoiceSequence
+from app.domain.models.location import Location
+from app.domain.models.property_management import (
+    ManagementEntity,
+    Owner,
+    PropertyGroup,
+    UnitManagementContract,
+)
+from app.domain.models.team import Team, TeamMember, UnitTeamAssignment
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.DATABASE_SYNC_URL)

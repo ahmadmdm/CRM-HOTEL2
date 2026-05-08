@@ -27,11 +27,25 @@ async def list_units(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     status: Optional[UnitStatus] = Query(None),
+    location_id: Optional[UUID] = Query(None),
+    owner_id: Optional[UUID] = Query(None),
+    management_entity_id: Optional[UUID] = Query(None),
+    property_group_id: Optional[UUID] = Query(None),
+    team_id: Optional[UUID] = Query(None),
+    is_managed_by_us: Optional[bool] = Query(None),
 ):
     service = UnitService(db)
     skip = (page - 1) * page_size
     items, total = await service.list_units(
-        skip=skip, limit=page_size, status_filter=status
+        skip=skip,
+        limit=page_size,
+        status_filter=status,
+        location_id=location_id,
+        owner_id=owner_id,
+        management_entity_id=management_entity_id,
+        property_group_id=property_group_id,
+        team_id=team_id,
+        is_managed_by_us=is_managed_by_us,
     )
     return PaginatedResponse.create(
         items=[UnitSummary.model_validate(u) for u in items],

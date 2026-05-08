@@ -84,6 +84,7 @@ class Booking(Base, TimestampMixin):
     creator: Mapped["User"] = relationship("User", foreign_keys=[created_by])
     cleaning_tasks: Mapped[list] = relationship("CleaningTask", back_populates="booking")
     revenue_records: Mapped[list] = relationship("RevenueRecord", back_populates="booking")
+    invoices: Mapped[list["Invoice"]] = relationship("Invoice", back_populates="booking", lazy="selectin")
 
     __table_args__ = (
         Index("ix_bookings_unit_id", "unit_id"),

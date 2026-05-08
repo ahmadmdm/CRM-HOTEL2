@@ -32,6 +32,7 @@ class RevenueResponse(BaseModel):
     id: uuid.UUID
     unit_id: uuid.UUID
     booking_id: Optional[uuid.UUID]
+    journal_entry_id: Optional[uuid.UUID]
     amount: float
     category: FinanceCategory
     description: Optional[str]
@@ -67,6 +68,7 @@ class ExpenseUpdate(BaseModel):
 class ExpenseResponse(BaseModel):
     id: uuid.UUID
     unit_id: Optional[uuid.UUID]
+    journal_entry_id: Optional[uuid.UUID]
     amount: float
     category: FinanceCategory
     description: Optional[str]

@@ -23,6 +23,7 @@ class Customer(Base, TimestampMixin):
 
     # Relationships
     bookings: Mapped[list] = relationship("Booking", back_populates="customer", lazy="select")
+    invoices: Mapped[list["Invoice"]] = relationship("Invoice", back_populates="customer", lazy="select")
 
     __table_args__ = (
         Index("ix_customers_full_name", "full_name"),

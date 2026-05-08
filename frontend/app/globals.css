@@ -114,7 +114,7 @@
   h3,
   h4 {
     @apply font-display;
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
   }
 
   button,
@@ -158,10 +158,12 @@
 
   .section-kicker {
     @apply text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground;
+    letter-spacing: 0;
   }
 
   .metric-value {
     @apply text-3xl font-semibold tracking-tight text-foreground;
+    letter-spacing: 0;
   }
 
   .input-field {
@@ -279,6 +281,81 @@
     transform: none;
   }
 
+  .mobile-dock-scroll {
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-dock-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .accounting-command-panel {
+    @apply surface-card flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between md:p-6;
+  }
+
+  .accounting-balance-pill {
+    @apply inline-flex w-fit shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-sm font-semibold;
+  }
+
+  .accounting-balance-pill-ok {
+    @apply border-emerald-500/25 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300;
+  }
+
+  .accounting-balance-pill-danger {
+    @apply border-rose-500/25 bg-rose-500/10 text-rose-700 dark:text-rose-300;
+  }
+
+  .accounting-metric-card {
+    @apply surface-card relative overflow-hidden p-5;
+  }
+
+  .accounting-metric-card::before {
+    content: "";
+    position: absolute;
+    inset-inline: 1rem;
+    top: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(var(--ambient-b), 0.32), transparent);
+  }
+
+  .accounting-metric-debit::before {
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.42), transparent);
+  }
+
+  .accounting-metric-credit::before {
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.42), transparent);
+  }
+
+  .accounting-metric-balance::before {
+    background: linear-gradient(90deg, transparent, rgba(var(--ambient-a), 0.38), transparent);
+  }
+
+  .accounting-icon-bubble {
+    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary;
+  }
+
+  .accounting-panel {
+    @apply surface-card overflow-hidden;
+  }
+
+  .accounting-tree-row {
+    @apply flex items-center justify-between gap-3 rounded-2xl border border-border/60 bg-white/35 px-3 py-2 text-sm transition-colors dark:bg-white/5;
+  }
+
+  .accounting-tree-row:hover {
+    background: rgba(var(--surface-secondary-rgb), 0.72);
+  }
+
+  .accounting-entry-card {
+    @apply rounded-[24px] border border-border/70 bg-white/35 p-4 transition-colors dark:bg-white/5;
+  }
+
+  .accounting-entry-card:hover {
+    background: rgba(var(--surface-secondary-rgb), 0.62);
+  }
+
   .data-table-shell {
     @apply surface-card overflow-hidden;
   }
@@ -289,6 +366,7 @@
 
   .data-table-shell th {
     @apply px-4 py-3 text-start text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground;
+    letter-spacing: 0;
   }
 
   .data-table-shell td {

@@ -5,6 +5,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import type { User, UserRole } from "@/types";
 import { tokenStorage } from "@/lib/auth/token";
 import { authApi } from "@/lib/api/auth";
+import { logoutOneSignalUser } from "@/lib/onesignal";
 
 interface AuthState {
   user: User | null;
@@ -36,6 +37,7 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         await authApi.logout().catch(() => null);
+        await logoutOneSignalUser(process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID?.trim());
         tokenStorage.clear();
         set({ user: null, isAuthenticated: false });
         if (typeof window !== "undefined") {

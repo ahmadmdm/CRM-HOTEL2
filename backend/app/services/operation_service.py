@@ -5,6 +5,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.repositories.operation_repository import OperationRepository
 from app.repositories.unit_repository import UnitRepository
+from app.repositories.user_repository import UserRepository
 from app.domain.models.operation import (
     CleaningTask, MaintenanceTicket, TaskStatus, TicketStatus, TicketPriority
 )
@@ -13,6 +14,7 @@ from app.domain.schemas.operation import (
     CleaningTaskCreate, CleaningTaskUpdate, CleaningTaskStatusUpdate,
     MaintenanceTicketCreate, MaintenanceTicketUpdate, MaintenanceTicketStatusUpdate,
 )
+from app.services.notification_service import NotificationService
 
 
 class OperationService:
@@ -20,6 +22,8 @@ class OperationService:
         self.session = session
         self.repo = OperationRepository(session)
         self.unit_repo = UnitRepository(session)
+        self.user_repo = UserRepository(session)
+        self.notification_service = NotificationService()
 
     # ── Cleaning Tasks ─────────────────────────────────────────────
     async def create_cleaning_task(self, data: CleaningTaskCreate) -> CleaningTask:
@@ -27,6 +31,7 @@ class OperationService:
         created = await self.repo.create(task)
         await self.repo.commit()
         refreshed = await self._get_task(created.id)
+        await self._notify_cleaning_assignment(refreshed)
         return refreshed
 
     async def update_cleaning_task_status(
@@ -65,6 +70,7 @@ class OperationService:
         refreshed = await self.repo.get_ticket_by_id(created.id)
         if refreshed is None:
             raise HTTPException(status_code=404, detail="Maintenance ticket not found")
+        await self._notify_maintenance_assignment(refreshed)
         return refreshed
 
     async def update_ticket_status(
@@ -99,3 +105,60 @@ class OperationService:
         if not task:
             raise HTTPException(status_code=404, detail="Cleaning task not found")
         return task
+
+    async def _notify_cleaning_assignment(self, task: CleaningTask) -> None:
+        if not task.assigned_to:
+            return
+
+        assignee = await self.user_repo.get_by_id(task.assigned_to)
+        if not assignee or not assignee.is_active:
+            return
+
+        unit_label = task.unit.code if task.unit else str(task.unit_id)
+        await self.notification_service.notify_user(
+            user_id=assignee.id,
+            headings={
+                "en": "New housekeeping assignment",
+                "ar": "تم إسناد مهمة تنظيف جديدة",
+            },
+            contents={
+                "en": f"Unit {unit_label} needs your attention.",
+                "ar": f"تم إسناد مهمة تنظيف لك على الوحدة {unit_label}.",
+            },
+            url="/housekeeping",
+            web_push_topic="housekeeping-assignment",
+            data={
+                "event_type": "cleaning_assignment",
+                "task_id": str(task.id),
+                "unit_id": str(task.unit_id),
+            },
+        )
+
+    async def _notify_maintenance_assignment(self, ticket: MaintenanceTicket) -> None:
+        if not ticket.assigned_to:
+            return
+
+        assignee = await self.user_repo.get_by_id(ticket.assigned_to)
+        if not assignee or not assignee.is_active:
+            return
+
+        unit_label = ticket.unit.code if ticket.unit else str(ticket.unit_id)
+        await self.notification_service.notify_user(
+            user_id=assignee.id,
+            headings={
+                "en": "New maintenance ticket",
+                "ar": "تم إسناد تذكرة صيانة جديدة",
+            },
+            contents={
+                "en": f"{ticket.title} for unit {unit_label} is waiting for you.",
+                "ar": f"تم إسناد تذكرة \"{ticket.title}\" لك على الوحدة {unit_label}.",
+            },
+            url="/maintenance",
+            web_push_topic="maintenance-assignment",
+            data={
+                "event_type": "maintenance_assignment",
+                "ticket_id": str(ticket.id),
+                "unit_id": str(ticket.unit_id),
+                "priority": ticket.priority.value,
+            },
+        )

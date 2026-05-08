@@ -28,8 +28,10 @@ services:
     build:
       args:
         NEXT_PUBLIC_API_URL: https://crm.clo0.net
+        NEXT_PUBLIC_ONESIGNAL_APP_ID: ${NEXT_PUBLIC_ONESIGNAL_APP_ID:-}
     environment:
       BACKEND_INTERNAL_URL: http://backend:8000
+      NEXT_PUBLIC_ONESIGNAL_APP_ID: ${NEXT_PUBLIC_ONESIGNAL_APP_ID:-}
     ports: !override
       - "127.0.0.1:3810:3000"
     volumes: !override []

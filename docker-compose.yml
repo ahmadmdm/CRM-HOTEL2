@@ -97,11 +97,13 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: http://localhost:8888
+        NEXT_PUBLIC_ONESIGNAL_APP_ID: ${NEXT_PUBLIC_ONESIGNAL_APP_ID:-}
     container_name: crm_frontend
     env_file:
       - .env
     environment:
       BACKEND_INTERNAL_URL: http://backend:8000
+      NEXT_PUBLIC_ONESIGNAL_APP_ID: ${NEXT_PUBLIC_ONESIGNAL_APP_ID:-}
     ports:
       - "3000:3000"
     depends_on:

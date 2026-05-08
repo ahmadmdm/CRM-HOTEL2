@@ -84,6 +84,9 @@ def require_roles(*roles: UserRole):
 AdminOnly = require_roles(UserRole.SUPER_ADMIN)
 AdminOrSubAdmin = require_roles(UserRole.SUPER_ADMIN, UserRole.SUB_ADMIN)
 AdminOrFinancial = require_roles(UserRole.SUPER_ADMIN, UserRole.FINANCIAL)
+AdminOrSubAdminOrFinancial = require_roles(
+    UserRole.SUPER_ADMIN, UserRole.SUB_ADMIN, UserRole.FINANCIAL
+)
 AdminOrOperations = require_roles(
     UserRole.SUPER_ADMIN, UserRole.SUB_ADMIN, UserRole.OPERATIONS
 )

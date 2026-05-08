@@ -8,6 +8,7 @@ from fastapi import HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.repositories.finance_repository import FinanceRepository
 from app.domain.models.finance import RevenueRecord, ExpenseRecord
+from app.services.accounting_service import AccountingService
 from app.domain.schemas.finance import (
     RevenueCreate, RevenueUpdate, ExpenseCreate, ExpenseUpdate, FinanceSummary
 )
@@ -16,17 +17,21 @@ from app.core.config import settings
 
 class FinanceService:
     def __init__(self, session: AsyncSession):
+        self.session = session
         self.repo = FinanceRepository(session)
+        self.accounting = AccountingService(session)
 
     async def create_revenue(self, data: RevenueCreate, created_by: UUID) -> RevenueRecord:
         record = RevenueRecord(**data.model_dump(), created_by=created_by)
         created = await self.repo.create(record)
+        await self.accounting.create_revenue_entry(created)
         await self.repo.commit()
         return created
 
     async def create_expense(self, data: ExpenseCreate, created_by: UUID) -> ExpenseRecord:
         record = ExpenseRecord(**data.model_dump(), created_by=created_by)
         created = await self.repo.create_expense(record)
+        await self.accounting.create_expense_entry(created)
         await self.repo.commit()
         return created
 

@@ -245,23 +245,11 @@ export function MobileDock() {
   }
 
   const availableItems = dashboardNavItems.filter((item) => item.roles.includes(user.role));
-  const activeItem = availableItems.find((item) => isItemActive(pathname, item.href));
-  const accountItem = availableItems.find((item) => item.href === "/account");
-  const priorityHrefs = Array.from(
-    new Set(["/", activeItem?.href, accountItem?.href].filter(Boolean))
-  ) as string[];
-
-  const visibleItems = [
-    ...priorityHrefs
-      .map((href) => availableItems.find((item) => item.href === href))
-      .filter((item): item is NavItem => Boolean(item)),
-    ...availableItems.filter((item) => !priorityHrefs.includes(item.href)),
-  ].slice(0, 5);
 
   return (
-    <nav className="fixed inset-x-4 bottom-4 z-40 lg:hidden">
-      <div className="surface-panel flex items-center justify-between gap-1 px-2 py-2">
-        {visibleItems.map((item) => {
+    <nav className="fixed inset-x-3 bottom-3 z-40 pb-[env(safe-area-inset-bottom)] lg:hidden">
+      <div className="surface-panel mobile-dock-scroll mx-auto flex max-w-3xl items-center gap-1 overflow-x-auto px-2 py-2">
+        {availableItems.map((item) => {
           const Icon = item.icon;
           const active = isItemActive(pathname, item.href);
 
@@ -270,14 +258,16 @@ export function MobileDock() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex min-w-0 flex-1 flex-col items-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-medium transition-all",
+                "flex min-w-[76px] shrink-0 flex-col items-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-medium transition-all duration-200",
                 active
                   ? "bg-slate-950 text-white shadow-lg shadow-slate-950/10"
-                  : "text-muted-foreground"
+                  : "text-muted-foreground hover:bg-white/55 hover:text-foreground dark:hover:bg-white/5"
               )}
+              aria-current={active ? "page" : undefined}
+              title={getNavLabel(item, language)}
             >
-              <Icon className="h-4 w-4" />
-              <span className="truncate">{getNavLabel(item, language)}</span>
+              <Icon className="h-4 w-4 shrink-0" />
+              <span className="w-full truncate text-center">{getNavLabel(item, language)}</span>
             </Link>
           );
         })}

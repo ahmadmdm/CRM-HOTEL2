@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Toaster } from "@/components/ui/toaster";
+import { NotificationManager } from "@/components/providers/NotificationManager";
 import { tokenStorage } from "@/lib/auth/token";
 import { getLanguageDirection, writeLanguageCookie } from "@/lib/language";
 import { resolveDocumentTitle } from "@/lib/site";
@@ -86,6 +87,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <RootUIEffects />
       <AuthBootstrapEffects />
+      <NotificationManager />
       {children}
       <Toaster />
       {process.env.NODE_ENV === "development" && (

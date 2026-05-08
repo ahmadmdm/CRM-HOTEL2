@@ -1,0 +1,23 @@
+const LEGACY_ICON_SVG = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="CRM Hotel icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#155e75" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#bg)" />
+  <path d="M20 18h24a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H20a4 4 0 0 1-4-4V22a4 4 0 0 1 4-4Z" fill="#ecfeff" opacity="0.92" />
+  <path d="M26 14h12l10 8H16l10-8Z" fill="#f59e0b" />
+  <path d="M28 30h8v20h-8V30Z" fill="#0f766e" />
+  <path d="M22 28h4v4h-4v-4Zm0 8h4v4h-4v-4Zm16-8h4v4h-4v-4Zm0 8h4v4h-4v-4Z" fill="#155e75" />
+</svg>`;
+
+export function GET() {
+  return new Response(LEGACY_ICON_SVG, {
+    headers: {
+      "Content-Type": "image/svg+xml",
+      "Cache-Control": "public, max-age=86400, immutable",
+    },
+  });
+}

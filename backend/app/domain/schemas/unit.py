@@ -15,6 +15,12 @@ class UnitCreate(BaseModel):
     price_per_night: Optional[float] = None
     price_per_month: Optional[float] = None
     location: Optional[str] = None
+    location_id: Optional[uuid.UUID] = None
+    owner_id: Optional[uuid.UUID] = None
+    management_entity_id: Optional[uuid.UUID] = None
+    property_group_id: Optional[uuid.UUID] = None
+    is_managed_by_us: bool = False
+    admin_fee_percent: Optional[float] = None
     amenities: Optional[List[str]] = []
     smart_lock_code: Optional[str] = None
     notes: Optional[str] = None
@@ -27,6 +33,13 @@ class UnitCreate(BaseModel):
     def code_uppercase(cls, v: str) -> str:
         return v.strip().upper()
 
+    @field_validator("admin_fee_percent")
+    @classmethod
+    def admin_fee_percent_range(cls, value: float | None) -> float | None:
+        if value is not None and not 0 <= value <= 100:
+            raise ValueError("Admin fee percent must be between 0 and 100")
+        return value
+
 
 class UnitUpdate(BaseModel):
     name: Optional[str] = None
@@ -36,12 +49,25 @@ class UnitUpdate(BaseModel):
     price_per_night: Optional[float] = None
     price_per_month: Optional[float] = None
     location: Optional[str] = None
+    location_id: Optional[uuid.UUID] = None
+    owner_id: Optional[uuid.UUID] = None
+    management_entity_id: Optional[uuid.UUID] = None
+    property_group_id: Optional[uuid.UUID] = None
+    is_managed_by_us: Optional[bool] = None
+    admin_fee_percent: Optional[float] = None
     amenities: Optional[List[str]] = None
     smart_lock_code: Optional[str] = None
     notes: Optional[str] = None
     supervisor_id: Optional[uuid.UUID] = None
     housekeeping_team_ids: Optional[List[uuid.UUID]] = None
     maintenance_team_ids: Optional[List[uuid.UUID]] = None
+
+    @field_validator("admin_fee_percent")
+    @classmethod
+    def admin_fee_percent_range(cls, value: float | None) -> float | None:
+        if value is not None and not 0 <= value <= 100:
+            raise ValueError("Admin fee percent must be between 0 and 100")
+        return value
 
 
 class UnitStatusUpdate(BaseModel):
@@ -60,6 +86,12 @@ class UnitResponse(BaseModel):
     base_price_per_night: Optional[float] = None  # alias for price_per_night
     price_per_month: Optional[float]
     location: Optional[str]
+    location_id: Optional[uuid.UUID]
+    owner_id: Optional[uuid.UUID]
+    management_entity_id: Optional[uuid.UUID]
+    property_group_id: Optional[uuid.UUID]
+    is_managed_by_us: bool
+    admin_fee_percent: Optional[float]
     amenities: Optional[List[Any]]
     images: Optional[List[str]]
     smart_lock_code: Optional[str]
@@ -90,6 +122,12 @@ class UnitSummary(BaseModel):
     base_price_per_night: Optional[float] = None
     price_per_month: Optional[float]
     location: Optional[str]
+    location_id: Optional[uuid.UUID]
+    owner_id: Optional[uuid.UUID]
+    management_entity_id: Optional[uuid.UUID]
+    property_group_id: Optional[uuid.UUID]
+    is_managed_by_us: bool
+    admin_fee_percent: Optional[float]
     supervisor_id: Optional[uuid.UUID] = None
     supervisor: Optional[UserReference] = None
     housekeeping_team: List[UserReference] = Field(default_factory=list)

@@ -67,6 +67,11 @@ class Settings(BaseSettings):
     AUTH_LOGIN_RATE_LIMIT: str = "5/minute"
     AUTH_REFRESH_RATE_LIMIT: str = "20/minute"
 
+    # Push Notifications (OneSignal)
+    ONESIGNAL_APP_ID: str | None = None
+    ONESIGNAL_REST_API_KEY: str | None = None
+    ONESIGNAL_API_URL: str = "https://api.onesignal.com/notifications?c=push"
+
     # CORS
     ALLOWED_ORIGINS: List[str] = Field(
         default_factory=lambda: ["http://localhost:3000", "http://frontend:3000"]

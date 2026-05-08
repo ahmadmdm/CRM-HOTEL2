@@ -8,6 +8,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.repositories.unit_repository import UnitRepository
 from app.domain.models.unit import Unit, UnitStatus, UNIT_STATUS_TRANSITIONS
+from app.domain.models.location import Location
+from app.domain.models.property_management import ManagementEntity, Owner, PropertyGroup
+from app.domain.models.team import UnitTeamAssignment
 from app.domain.schemas.unit import UnitCreate, UnitUpdate
 from app.core.config import settings
 from app.domain.models.user import User, UserRole
@@ -33,6 +36,26 @@ class UnitService:
                 detail=f"Unknown user ids in unit assignment: {missing}",
             )
         return users_by_id
+
+    async def _ensure_exists(self, model: type, item_id: UUID | None, label: str) -> None:
+        if item_id is None:
+            return
+        result = await self.session.execute(select(model.id).where(model.id == item_id))
+        if result.scalar_one_or_none() is None:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"{label} not found",
+            )
+
+    async def _validate_unit_classification(self, data: UnitCreate | UnitUpdate) -> None:
+        if "location_id" in data.model_fields_set:
+            await self._ensure_exists(Location, data.location_id, "Location")
+        if "owner_id" in data.model_fields_set:
+            await self._ensure_exists(Owner, data.owner_id, "Owner")
+        if "management_entity_id" in data.model_fields_set:
+            await self._ensure_exists(ManagementEntity, data.management_entity_id, "Management entity")
+        if "property_group_id" in data.model_fields_set:
+            await self._ensure_exists(PropertyGroup, data.property_group_id, "Property group")
 
     async def _resolve_assignments(
         self,
@@ -94,6 +117,7 @@ class UnitService:
             data.housekeeping_team_ids,
             data.maintenance_team_ids,
         )
+        await self._validate_unit_classification(data)
         unit_payload = data.model_dump(
             exclude={"supervisor_id", "housekeeping_team_ids", "maintenance_team_ids"}
         )
@@ -114,13 +138,14 @@ class UnitService:
 
     async def update_unit(self, unit_id: UUID, data: UnitUpdate) -> Unit:
         unit = await self.get_unit(unit_id)
-        updated = await self.repo.update(
-            unit,
-            data.model_dump(
-                exclude={"supervisor_id", "housekeeping_team_ids", "maintenance_team_ids"},
-                exclude_unset=True,
-            ),
+        await self._validate_unit_classification(data)
+        payload = data.model_dump(
+            exclude={"supervisor_id", "housekeeping_team_ids", "maintenance_team_ids"},
+            exclude_unset=True,
         )
+        for key, value in payload.items():
+            setattr(unit, key, value)
+        updated = unit
 
         if "supervisor_id" in data.model_fields_set:
             supervisor, _, _ = await self._resolve_assignments(
@@ -179,10 +204,32 @@ class UnitService:
         skip: int = 0,
         limit: int = 20,
         status_filter: Optional[UnitStatus] = None,
+        location_id: Optional[UUID] = None,
+        owner_id: Optional[UUID] = None,
+        management_entity_id: Optional[UUID] = None,
+        property_group_id: Optional[UUID] = None,
+        team_id: Optional[UUID] = None,
+        is_managed_by_us: Optional[bool] = None,
     ):
         filters = []
         if status_filter:
             filters.append(Unit.status == status_filter)
+        if location_id:
+            filters.append(Unit.location_id == location_id)
+        if owner_id:
+            filters.append(Unit.owner_id == owner_id)
+        if management_entity_id:
+            filters.append(Unit.management_entity_id == management_entity_id)
+        if property_group_id:
+            filters.append(Unit.property_group_id == property_group_id)
+        if team_id:
+            filters.append(
+                Unit.id.in_(
+                    select(UnitTeamAssignment.unit_id).where(UnitTeamAssignment.team_id == team_id)
+                )
+            )
+        if is_managed_by_us is not None:
+            filters.append(Unit.is_managed_by_us == is_managed_by_us)
         return await self.repo.get_all(skip=skip, limit=limit, filters=filters)
 
     async def upload_unit_image(self, unit_id: UUID, file: UploadFile) -> Unit:

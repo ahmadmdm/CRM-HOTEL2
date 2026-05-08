@@ -11,6 +11,7 @@ const SECRET = new TextEncoder().encode(secretValue);
 
 // Routes accessible without authentication
 const PUBLIC_ROUTES = ["/login", "/api/auth", "/api/backend"];
+const PUBLIC_FILE_PATTERN = /\.[^/]+$/;
 const DASHBOARD_ROLES = ["super_admin", "sub_admin", "operations"];
 
 // Role-based route access map
@@ -40,6 +41,11 @@ function redirectForRole(userRole: string, request: NextRequest) {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Next.js public assets are served from the site root, not /public.
+  if (PUBLIC_FILE_PATTERN.test(pathname)) {
+    return NextResponse.next();
+  }
 
   // Allow public routes
   if (PUBLIC_ROUTES.some((r) => pathname.startsWith(r))) {
@@ -91,6 +97,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|public|api/health).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/health|.*\\..*$).*)",
   ],
 };

@@ -39,6 +39,9 @@ class RevenueRecord(Base, TimestampMixin):
     created_by: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
     )
+    journal_entry_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("journal_entries.id", ondelete="SET NULL"), nullable=True, index=True
+    )
 
     amount: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     category: Mapped[FinanceCategory] = mapped_column(
@@ -52,6 +55,7 @@ class RevenueRecord(Base, TimestampMixin):
     # Relationships
     unit: Mapped["Unit"] = relationship("Unit", back_populates="revenue_records")
     booking: Mapped["Booking"] = relationship("Booking", back_populates="revenue_records")
+    journal_entry: Mapped["JournalEntry | None"] = relationship("JournalEntry", lazy="selectin")
 
     __table_args__ = (
         Index("ix_revenue_unit_id", "unit_id"),
@@ -72,6 +76,9 @@ class ExpenseRecord(Base, TimestampMixin):
     created_by: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
     )
+    journal_entry_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("journal_entries.id", ondelete="SET NULL"), nullable=True, index=True
+    )
 
     amount: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     category: Mapped[FinanceCategory] = mapped_column(
@@ -84,6 +91,7 @@ class ExpenseRecord(Base, TimestampMixin):
 
     # Relationships
     unit: Mapped["Unit"] = relationship("Unit", back_populates="expense_records")
+    journal_entry: Mapped["JournalEntry | None"] = relationship("JournalEntry", lazy="selectin")
 
     __table_args__ = (
         Index("ix_expense_unit_id", "unit_id"),

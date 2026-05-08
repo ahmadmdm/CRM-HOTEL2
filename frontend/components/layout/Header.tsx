@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Bell, Search, Sun, Moon, Sparkles } from "lucide-react";
 import { useAuthStore } from "@/stores/authStore";
+import { useNotificationStore } from "@/stores/notificationStore";
 import { useUIStore } from "@/stores/uiStore";
 import { getRoleLabel, useI18n } from "@/lib/i18n";
 import { toast } from "@/components/ui/toaster";
@@ -14,6 +15,8 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { user } = useAuthStore();
+  const notificationPermission = useNotificationStore((state) => state.permission);
+  const requestNotifications = useNotificationStore((state) => state.triggerPermissionRequest);
   const { theme, setTheme } = useUIStore();
   const { language, locale, t } = useI18n();
   const [query, setQuery] = useState("");
@@ -116,12 +119,17 @@ export function Header() {
           </button>
 
           <button
+            onClick={() => {
+              void requestNotifications();
+            }}
             className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-white/45 bg-white/60 text-muted-foreground transition-all hover:-translate-y-0.5 hover:text-foreground dark:border-white/10 dark:bg-white/5"
             aria-label={t("التنبيهات", "Notifications")}
             title={t("التنبيهات", "Notifications")}
           >
             <Bell className="h-4 w-4" />
-            <span className="absolute right-3 top-3 h-2 w-2 rounded-full bg-primary" />
+            {notificationPermission !== "granted" && (
+              <span className="absolute right-3 top-3 h-2 w-2 rounded-full bg-primary" />
+            )}
           </button>
 
           <div className="hidden items-center gap-3 rounded-[22px] border border-white/45 bg-white/65 px-3 py-2 shadow-sm dark:border-white/10 dark:bg-white/5 sm:flex">

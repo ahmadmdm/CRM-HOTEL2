@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>دليل استخدام نظام إدارة الوحدات</title>
+    <style>
+      @font-face {
+        font-family: "Thmanyah Sans";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahsans/woff2/thmanyahsans-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Sans";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahsans/woff2/thmanyahsans-Medium.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Sans";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahsans/woff2/thmanyahsans-Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Serif Display";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Serif Display";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahserifdisplay/woff2/thmanyahserifdisplay-Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Thmanyah Serif Text";
+        src: url("../../Thmanyah-Font-Family/thmanyah typeface/thmanyahseriftext/woff2/thmanyahseriftext-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      :root {
+        --ink: #11263d;
+        --muted: #5e7388;
+        --brand: #ff7a1a;
+        --brand-soft: #ffe4cf;
+        --paper: #f7f2ea;
+        --panel: #ffffff;
+        --line: rgba(17, 38, 61, 0.1);
+        --shadow: 0 30px 80px rgba(17, 38, 61, 0.14);
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Thmanyah Sans", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(255, 122, 26, 0.2), transparent 28%),
+          linear-gradient(180deg, #f4efe7 0%, #fffdfa 100%);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      .guide {
+        width: 210mm;
+        margin: 0 auto;
+      }
+
+      .page {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        padding: 14mm;
+        display: flex;
+        flex-direction: column;
+        gap: 10mm;
+        page-break-after: always;
+        overflow: hidden;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      .cover {
+        justify-content: space-between;
+        overflow: hidden;
+      }
+
+      .cover::before,
+      .cover::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        background: linear-gradient(135deg, rgba(255, 122, 26, 0.2), rgba(17, 38, 61, 0.04));
+        z-index: 0;
+      }
+
+      .cover::before {
+        width: 180mm;
+        height: 180mm;
+        inset-inline-start: -65mm;
+        top: -65mm;
+      }
+
+      .cover::after {
+        width: 100mm;
+        height: 100mm;
+        inset-inline-end: -15mm;
+        bottom: 42mm;
+      }
+
+      .cover > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        align-self: flex-start;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(17, 38, 61, 0.08);
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        backdrop-filter: blur(14px);
+        font-family: "Thmanyah Sans", sans-serif;
+        font-weight: 500;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 16mm;
+        align-items: center;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-family: "Thmanyah Serif Display", serif;
+        font-size: 27px;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+      }
+
+      .hero p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 2;
+        color: var(--muted);
+        font-family: "Thmanyah Serif Text", serif;
+      }
+
+      .hero-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 7mm;
+      }
+
+      .hero-card,
+      .panel,
+      .shot,
+      .metric,
+      .callout {
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+      }
+
+      .hero-card {
+        padding: 8mm;
+      }
+
+      .hero-card strong {
+        display: block;
+        margin-bottom: 3mm;
+        font-size: 17px;
+        font-family: "Thmanyah Serif Display", serif;
+      }
+
+      .hero-card span {
+        display: block;
+        color: var(--muted);
+        line-height: 1.95;
+        font-size: 13px;
+        font-family: "Thmanyah Serif Text", serif;
+      }
+
+      .cover-shot img,
+      .shot img {
+        width: 100%;
+        display: block;
+        border-radius: 20px;
+        object-fit: contain;
+        background: linear-gradient(180deg, rgba(244, 239, 231, 0.9), rgba(255, 255, 255, 0.96));
+      }
+
+      .cover-shot {
+        padding: 5mm;
+      }
+
+      .cover-footer {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4mm;
+      }
+
+      .metric {
+        padding: 5mm 6mm;
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 1.5mm;
+        font-family: "Thmanyah Sans", sans-serif;
+        font-weight: 700;
+      }
+
+      .metric span {
+        display: block;
+        color: var(--muted);
+        font-size: 11.5px;
+        line-height: 1.8;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10mm;
+      }
+
+      .section-head h2 {
+        margin: 0 0 3mm;
+        font-family: "Thmanyah Serif Display", serif;
+        font-size: 21px;
+        line-height: 1.35;
+      }
+
+      .section-head p {
+        margin: 0;
+        max-width: 108mm;
+        color: var(--muted);
+        line-height: 1.95;
+        font-size: 12.5px;
+        font-family: "Thmanyah Serif Text", serif;
+      }
+
+      .page-number {
+        min-width: 14mm;
+        height: 14mm;
+        padding: 0 4mm;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        background: var(--ink);
+        color: white;
+        font-family: "Thmanyah Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .grid {
+        display: grid;
+        gap: 8mm;
+        align-items: start;
+      }
+
+      .grid.two {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grid.equal {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .panel {
+        padding: 5.5mm;
+      }
+
+      .panel h3 {
+        margin: 0 0 4mm;
+        font-size: 15px;
+        font-family: "Thmanyah Serif Display", serif;
+      }
+
+      .panel p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12.5px;
+        line-height: 1.95;
+        font-family: "Thmanyah Serif Text", serif;
+      }
+
+      .dual {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5mm;
+      }
+
+      .lang {
+        padding: 4.5mm;
+        border-radius: 22px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 242, 234, 0.9));
+        border: 1px solid var(--line);
+      }
+
+      .lang.english {
+        direction: ltr;
+        text-align: left;
+      }
+
+      .lang h4 {
+        margin: 0 0 3mm;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--brand);
+        font-family: "Thmanyah Sans", sans-serif;
+        font-weight: 700;
+      }
+
+      .lang ul {
+        margin: 0;
+        padding-inline-start: 5mm;
+      }
+
+      .lang li {
+        margin-bottom: 2.3mm;
+        color: var(--ink);
+        font-size: 11.1px;
+        line-height: 1.75;
+      }
+
+      .shot {
+        padding: 4mm;
+      }
+
+      .shot img {
+        max-height: 92mm;
+      }
+
+      .shot-label {
+        display: flex;
+        justify-content: space-between;
+        gap: 4mm;
+        margin-top: 3mm;
+        padding: 0 2mm;
+        color: var(--muted);
+        font-size: 11px;
+        font-family: "Thmanyah Sans", sans-serif;
+      }
+
+      .steps {
+        display: grid;
+        gap: 3mm;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 11mm 1fr;
+        gap: 4mm;
+        align-items: start;
+        padding: 4mm;
+        border-radius: 20px;
+        background: rgba(255, 228, 207, 0.4);
+        border: 1px solid rgba(255, 122, 26, 0.15);
+      }
+
+      .step strong {
+        width: 11mm;
+        height: 11mm;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--brand);
+        color: white;
+        font-family: "Thmanyah Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .step div {
+        font-size: 11.2px;
+        line-height: 1.8;
+        color: var(--ink);
+      }
+
+      .callout {
+        padding: 7mm;
+        background: linear-gradient(135deg, #11263d, #1f4261);
+        color: white;
+      }
+
+      .callout h3,
+      .callout p,
+      .callout li {
+        color: white;
+      }
+
+      .callout p,
+      .callout li {
+        opacity: 0.88;
+      }
+
+      .checklist {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4mm 7mm;
+      }
+
+      .checklist div {
+        padding: 4mm;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.08);
+        font-size: 11.5px;
+        line-height: 1.8;
+        font-family: "Thmanyah Serif Text", serif;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+
+        .hero-card,
+        .panel,
+        .shot,
+        .metric,
+        .callout {
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="guide">
+      <section class="page cover">
+        <div class="eyebrow">CRM Hotel Operations Guide</div>
+        <div class="hero">
+          <div class="hero-stack">
+            <div>
+              <h1>الدليل التشغيلي الاحترافي لنظام CRM Hotel<br />Professional Operations Manual for CRM Hotel</h1>
+            </div>
+            <div class="hero-card">
+              <strong>نسخة تنفيذية ثنائية اللغة للاستخدام اليومي</strong>
+              <span>
+                أُعد هذا التقرير ليكون مرجعًا تشغيليًا موحدًا لفرق الإدارة والتشغيل والمالية وخدمة العملاء،
+                مع شرح عربي وإنجليزي متوازن يوضح مسار العمل، المسؤوليات، وأفضل ممارسات الاستخدام داخل مستند واحد جاهز للطباعة والتوزيع.
+              </span>
+            </div>
+            <div class="hero-card">
+              <strong>Executive bilingual edition</strong>
+              <span>
+                This manual is written as a polished operational reference for management, operations, finance,
+                customer service, and field teams. It combines real system screens with structured guidance so teams can adopt the platform with clarity, speed, and consistent execution.
+              </span>
+            </div>
+          </div>
+          <div class="cover-shot hero-card">
+            <img src="./screenshots/dashboard.png" alt="Dashboard screenshot" />
+          </div>
+        </div>
+        <div class="cover-footer">
+          <div class="metric">
+            <strong>10</strong>
+            <span>لقطات فعلية موثقة من بيئة النظام لتوضيح الاستخدام العملي</span>
+          </div>
+          <div class="metric">
+            <strong>AR / EN</strong>
+            <span>محتوى ثنائي اللغة يدعم التدريب والتشغيل والإحاطة الإدارية</span>
+          </div>
+          <div class="metric">
+            <strong>PDF</strong>
+            <span>مهيأ للطباعة والأرشفة والمشاركة الرسمية مع الفرق المعنية</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="section-head">
+          <div>
+            <h2>1. بدء الاستخدام وتسجيل الدخول</h2>
+            <p>تنطلق رحلة الاستخدام من شاشة الدخول، ومنها يوجّه النظام المستخدم تلقائيًا إلى بيئة العمل المناسبة وفق الدور الوظيفي والصلاحيات المعتمدة.</p>
+          </div>
+          <div class="page-number">01</div>
+        </div>
+        <div class="grid two">
+          <div class="shot">
+            <img src="./screenshots/login.png" alt="Login page" />
+            <div class="shot-label">
+              <span>واجهة تسجيل الدخول</span>
+              <span>Login Experience</span>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="dual">
+              <div class="lang arabic">
+                <h4>Arabic</h4>
+                <ul>
+                  <li>استخدم البريد الإلكتروني وكلمة المرور المعتمدين من مسؤول النظام أو الإدارة التشغيلية.</li>
+                  <li>بعد الدخول، ينقلك النظام مباشرة إلى المسار الأنسب لعملك، سواء كان إداريًا أو تشغيليًا أو ميدانيًا.</li>
+                  <li>يمكن تبديل اللغة من الواجهة العليا في معظم الصفحات بحسب تفضيل المستخدم أو متطلبات الفريق.</li>
+                </ul>
+              </div>
+              <div class="lang english">
+                <h4>English</h4>
+                <ul>
+                  <li>Use the approved email address and password issued by the system administrator or operations lead.</li>
+                  <li>Once authenticated, the platform routes you to the workspace that matches your operational role.</li>
+                  <li>Language switching is available from the upper interface area on most major screens.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="steps" style="margin-top: 6mm;">
+              <div class="step"><strong>1</strong><div>تحقق من اسم النظام ورسائل التعريف قبل إدخال بيانات الاعتماد لضمان أنك تعمل على البيئة الصحيحة.</div></div>
+              <div class="step"><strong>2</strong><div>إذا فتح النظام مسارًا غير متوقع بعد تسجيل الدخول، فراجع صلاحية الحساب والدور الوظيفي من شاشة المستخدمين.</div></div>
+              <div class="step"><strong>3</strong><div>فعّل الإشعارات حين يطلب المتصفح ذلك حتى تبقى المهام والتنبيهات التشغيلية متاحة فور صدورها.</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="section-head">
+          <div>
+            <h2>2. المسارات حسب الدور ودعم اللغتين</h2>
+            <p>لا يقدم النظام واجهة موحدة للجميع فقط، بل يوجّه كل مستخدم إلى مساحة العمل الموافقة لدوره مع دعم كامل للعربية والإنجليزية واتجاهي RTL وLTR.</p>
+          </div>
+          <div class="page-number">02</div>
+        </div>
+        <div class="grid two">
+          <div class="panel">
+            <h3>كيف يوجّهك النظام بعد الدخول؟</h3>
+            <p>
+              بعد المصادقة، يفتح النظام المسار المناسب تلقائيًا: الإدارة العليا، الإدارة الفرعية، المالية، العمليات، التنظيف، أو الصيانة. هذا يقلل الأخطاء ويجعل كل فريق يعمل داخل واجهته المختصة دون تشويش.
+            </p>
+            <div class="dual" style="margin-top: 6mm;">
+              <div class="lang arabic">
+                <h4>Arabic</h4>
+                <ul>
+                  <li>المستخدم الإداري يصل إلى الشاشات الشاملة مثل الوحدات والمستخدمين والتقارير العامة.</li>
+                  <li>فرق العمليات والتنظيف والصيانة ترى فقط ما يخدم سير العمل اليومي والمهام المرتبطة بها.</li>
+                  <li>دعم اللغة يضمن أن المحتوى والعناوين والرسائل تظهر بصياغة متسقة في العربية والإنجليزية.</li>
+                </ul>
+              </div>
+              <div class="lang english">
+                <h4>English</h4>
+                <ul>
+                  <li>Administrative users access full management screens such as units, users, and reporting views.</li>
+                  <li>Operations, housekeeping, and maintenance teams see focused workspaces built for daily execution.</li>
+                  <li>Language support keeps labels, navigation, and feedback messages consistent in both Arabic and English.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="callout">
+            <h3>Role-based workspaces</h3>
+            <div class="checklist" style="margin-top: 6mm;">
+              <div>الإدارة العليا: إدارة شاملة وصلاحيات كاملة.</div>
+              <div>Super Admin: full platform control and oversight.</div>
+              <div>المالية: الملخصات، القيود، الفواتير، وكشوف الملاك.</div>
+              <div>Finance: summaries, journals, invoices, and owner statements.</div>
+              <div>العمليات: متابعة الطلبات وإسناد المهام.</div>
+              <div>Operations: request tracking and task assignment.</div>
+              <div>التنظيف والصيانة: واجهات ميدانية سريعة للتنفيذ.</div>
+              <div>Housekeeping and maintenance: fast field-ready execution views.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="section-head">
+          <div>
+            <h2>3. لوحة القيادة التنفيذية</h2>
+            <p>تمثل لوحة القيادة نقطة المتابعة اليومية الأولى، إذ تجمع المؤشرات الرئيسية والحالات الحرجة واختصارات الوصول السريع إلى أكثر الوحدات والعمليات استخدامًا.</p>
+          </div>
+          <div class="page-number">03</div>
+        </div>
+        <div class="grid two">
+          <div class="panel">
+            <h3>ما الذي تراقبه من هنا؟</h3>
+            <p>
+              تمنح هذه الشاشة الإدارة والمشرفين صورة مركزة عن الأداء اليومي: الإشغال، حالة الأعمال المفتوحة،
+              التنبيهات، والانتقال السريع إلى الوحدات والحجوزات والعملاء والمالية دون فقدان السياق التشغيلي.
+            </p>
+            <div class="dual" style="margin-top: 6mm;">
+              <div class="lang arabic">
+                <h4>Arabic</h4>
+                <ul>
+                  <li>ابدأ يومك بمراجعة البطاقات العليا للحصول على قراءة فورية للحالة العامة.</li>
+                  <li>استخدم البحث والاختصارات للوصول السريع إلى الشاشة أو السجل المطلوب دون تنقل طويل.</li>
+                  <li>راقب البطاقات ذات الأولوية أو الحالات التحذيرية التي تستدعي تدخلاً عاجلاً.</li>
+                </ul>
+              </div>
+              <div class="lang english">
+                <h4>English</h4>
+                <ul>
+                  <li>Begin each workday with the top summary cards to establish the current operational picture.</li>
+                  <li>Use search and shortcuts to move directly to the page or record you need.</li>
+                  <li>Pay close attention to warning cards or alerts that indicate time-sensitive action.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="shot">
+            <img src="./screenshots/dashboard.png" alt="Dashboard page" />
+            <div class="shot-label">
+              <span>لوحة القيادة</span>
+              <span>Executive Dashboard</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="section-head">
+          <div>
+            <h2>4. إدارة الوحدات والحجوزات</h2>
+            <p>يعرض هذا القسم العلاقة التشغيلية بين شاشة الوحدات وشاشة الحجوزات، باعتبارهما المحور الأساسي لإدارة التوفر، الإشغال، وتدفق الخدمة اليومي.</p>
+          </div>
+          <div class="page-number">04</div>
+        </div>
+        <div class="grid equal">
+          <div class="shot">
+            <img src="./screenshots/units.png" alt="Units page" />
+            <div class="shot-label"><span>الوحدات</span><span>Units</span></div>
+          </div>
+          <div class="shot">
+            <img src="./screenshots/bookings.png" alt="Bookings page" />
+            <div class="shot-label"><span>الحجوزات</span><span>Bookings</span></div>
+          </div>
+        </div>
+        <div class="dual">
+          <div class="lang arabic">
+            <h4>Arabic</h4>
+            <ul>
+              <li>في شاشة الوحدات: راقب الجاهزية، الإشغال، التصنيف، الموقع، التسعير، والفرق المسندة لكل وحدة.</li>
+              <li>في شاشة الحجوزات: أنشئ الحجز أو راجعه مع متابعة التواريخ، الحالة، العميل، والوحدة المرتبطة.</li>
+              <li>تمثل الوحدات صورة المخزون التشغيلي، بينما تمثل الحجوزات الحركة الفعلية التي تؤثر مباشرة على ذلك المخزون.</li>
+            </ul>
+          </div>
+          <div class="lang english">
+            <h4>English</h4>
+            <ul>
+              <li>In Units, monitor readiness, occupancy, classification, location, pricing, and assigned operational teams.</li>
+              <li>In Bookings, create or review reservations while tracking dates, status, customer context, and linked unit records.</li>
+              <li>Units represent the operational inventory baseline, while Bookings reflect the real movement affecting that inventory.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid two" style="margin-top: 6mm;">
+          <div class="panel">
+            <h3>دورة حالة الوحدة</h3>
+            <p>
+              يدعم النظام انتقالات تشغيلية واضحة مثل: شاغرة، جاهزة، مشغولة، بانتظار التنظيف، وفي الصيانة. هذه الحالات ليست وصفًا بصريًا فقط، بل تؤثر على التوفر وإسناد الفرق واتخاذ القرار اليومي.
+            </p>
+          </div>
+          <div class="callout">
+            <h3>Operational coverage</h3>
+            <p>
+              Each unit can be linked to a supervisor, housekeeping team, and maintenance team. This allows management to detect coverage gaps early and maintain full readiness across the inventory.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="section-head">
+          <div>
+            <h2>5. العملاء والتشغيل الميداني</h2>
+            <p>يوضح هذا القسم كيف تُدار بيانات العملاء وكيف تتحول الملاحظات والطلبات والأحداث التشغيلية إلى مهام ميدانية قابلة للتنفيذ والمتابعة.</p>
+          </div>
+          <div class="page-number">05</div>
+        </div>
+        <div class="grid equal">
+          <div class="shot">
+            <img src="./screenshots/customers.png" alt="Customers page" />
+            <div class="shot-label"><span>العملاء</span><span>Customers</span></div>
+          </div>
+          <div class="shot">
+            <img src="./screenshots/operations.png" alt="Operations page" />
+            <div class="shot-label"><span>العمليات</span><span>Operations</span></div>
+          </div>
+        </div>
+        <div class="grid two">
+          <div class="panel">
+            <h3>كيف يعمل التدفق التشغيلي؟</h3>
+            <p>
+              عندما يظهر طلب عميل أو حالة تستدعي تدخلاً، يستطيع المشرف أو المسؤول إنشاء مهمة تنظيف أو صيانة
+              وإسنادها مباشرة إلى الموظف المختص. بعد ذلك تُعرض المهمة في واجهة المستلِم، وتستمر متابعتها حتى الإغلاق مع دعم التنبيهات حسب إعدادات النظام والمتصفح.
+            </p>
+          </div>
+          <div class="callout">
+            <h3>Operational flow</h3>
+            <p>
+              A customer interaction, booking issue, or service request can be converted into an actionable housekeeping or maintenance task. The assignment is created from the operations screen, routed to the responsible user, and followed through with notification-ready status visibility.
+            </p>
+          </div>
+        </div>
+        <div class="dual" style="margin-top: 6mm;">
+          <div class="lang arabic">
+            <h4>Arabic</h4>
+            <ul>
+              <li>سجل العميل لا يقتصر على الاسم ووسائل الاتصال، بل يشكل مرجعًا للخدمة والحجوزات والتاريخ التشغيلي.</li>
+              <li>يمكن للإدارة تطبيق القائمة السوداء مع تسجيل سبب الحظر ليظهر لاحقًا للمستخدمين المصرح لهم.</li>
+              <li>يساعد ذلك على حماية العمليات من الحالات المتكررة أو المخالفات المعروفة دون فقدان سجل القرار.</li>
+            </ul>
+          </div>
+          <div class="lang english">
+            <h4>English</h4>
+            <ul>
+              <li>Customer records act as an operational reference for service continuity, bookings, and account history.</li>
+              <li>Authorized users can place a customer on the blacklist and record the reason for future review.</li>
+              <li>This supports controlled decision-making without losing the historical context behind the restriction.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="section-head">
+          <div>
+            <h2>6. المالية والمحاسبة وعقود الإدارة</h2>
+            <p>يجمع هذا القسم الوظائف المالية المتقدمة التي لا تقتصر على الملخصات، بل تمتد إلى المصروفات، القيود اليدوية، الفواتير، كشوف الملاك، وعقود إدارة الوحدات.</p>
+          </div>
+          <div class="page-number">06</div>
+        </div>
+        <div class="grid two">
+          <div class="shot">
+            <img src="./screenshots/finance.png" alt="Finance page" />
+            <div class="shot-label"><span>المالية</span><span>Finance</span></div>
+          </div>
+          <div class="panel">
+            <div class="dual">
+              <div class="lang arabic">
+                <h4>Arabic</h4>
+                <ul>
+                  <li>توفر الشاشة ملخصًا ماليًا عامًا، ثم تفتح تبويبات متخصصة للإيرادات، المصروفات، والفواتير.</li>
+                  <li>يمكن تسجيل قيد يدوي، مراجعة ميزان المراجعة، وإنشاء كشف مالك لفترة زمنية محددة.</li>
+                  <li>يدعم النظام أيضًا إدارة عقود الوحدة بين المالك والجهة الإدارية وربطها بسجل الوحدة نفسه.</li>
+                </ul>
+              </div>
+              <div class="lang english">
+                <h4>English</h4>
+                <ul>
+                  <li>The finance workspace begins with a summary view, then expands into revenue, expenses, and invoice management tabs.</li>
+                  <li>Users can post manual journal entries, review the trial balance, and generate owner statements for a selected period.</li>
+                  <li>The platform also supports management contracts that link units, owners, and management entities in one financial workflow.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="callout" style="margin-top: 6mm;">
+          <h3>Finance feature map</h3>
+          <div class="checklist" style="margin-top: 6mm;">
+            <div>الإيرادات والمصروفات التشغيلية حسب الوحدة أو الفترة.</div>
+            <div>Revenue and operational expenses by unit or reporting period.</div>
+            <div>فواتير العملاء وكشوف الملاك وإدارة المستندات المالية.</div>
+            <div>Customer invoices, owner statements, and financial document flow.</div>
+            <div>قيود يدوية وميزان مراجعة ومتابعة عقود الإدارة.</div>
+            <div>Manual journals, trial balance review, and contract administration.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="section-head">
+          <div>
+            <h2>7. المستخدمون، التغطية التشغيلية، وأمان الحساب</h2>
+            <p>إدارة الحسابات في النظام لا تقف عند إنشاء المستخدم فقط، بل تمتد إلى توزيع الأدوار، قياس تغطية الفرق على الوحدات، وتأمين بيانات الدخول.</p>
+          </div>
+          <div class="page-number">07</div>
+        </div>
+        <div class="grid equal">
+          <div class="shot">
+            <img src="./screenshots/users.png" alt="Users page" />
+            <div class="shot-label"><span>المستخدمون</span><span>Users</span></div>
+          </div>
+          <div class="shot">
+            <img src="./screenshots/account.png" alt="Account page" />
+            <div class="shot-label"><span>الحساب والأمان</span><span>Account & Security</span></div>
+          </div>
+        </div>
+        <div class="dual">
+          <div class="lang arabic">
+            <h4>Arabic</h4>
+            <ul>
+              <li>تتيح شاشة المستخدمين إنشاء الحسابات، تفعيلها أو تعطيلها، وإسناد الأدوار التشغيلية والمالية والإدارية.</li>
+              <li>يعرض النظام أيضًا تغطية الوحدات: هل يوجد مشرف، وفريق تنظيف، وفريق صيانة لكل وحدة أم لا.</li>
+              <li>من صفحة الحساب والأمان يمكن للمستخدم تغيير كلمة المرور بأمان، ثم يُطلب منه تسجيل الدخول مجددًا لحماية الجلسة.</li>
+            </ul>
+          </div>
+          <div class="lang english">
+            <h4>English</h4>
+            <ul>
+              <li>The users screen supports account creation, activation control, and role assignment across administrative and operational teams.</li>
+              <li>The platform also exposes unit coverage so managers can identify missing supervisors, housekeeping, or maintenance teams.</li>
+              <li>From the account and security page, users can change their password securely and are then required to sign in again.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="section-head">
+          <div>
+            <h2>8. التنظيف، الصيانة، والتنبيهات الفورية</h2>
+            <p>يركز هذا القسم على الواجهات الميدانية السريعة التي تستخدمها فرق التنظيف والصيانة لاستلام المهام، تحديث حالتها، وإنهائها في أقل زمن ممكن.</p>
+          </div>
+          <div class="page-number">08</div>
+        </div>
+        <div class="grid two">
+          <div class="shot">
+            <img src="./screenshots/housekeeping.png" alt="Housekeeping page" />
+            <div class="shot-label"><span>مهام التنظيف</span><span>Housekeeping Tasks</span></div>
+          </div>
+          <div class="panel">
+            <h3>Notification-ready workflow</h3>
+            <p>
+              بعد تهيئة الإشعارات، يستطيع المستخدم متابعة المهام الجديدة من داخل الشاشة نفسها، كما يصبح المتصفح مؤهلاً لاستقبال التنبيهات الفورية عندما تكون بيئة الجهاز والمتصفح داعمة لذلك. في واجهة الصيانة الميدانية تظهر التذاكر المفتوحة وقيد التنفيذ، ويمكن بدء العمل أو إنهاء المهمة مباشرة من الشاشة.
+            </p>
+            <div class="checklist" style="margin-top: 6mm;">
+              <div>فعّل إذن الإشعارات من المتصفح عند أول طلب للسماح بالتنبيهات.</div>
+              <div>Enable browser notification permission the first time the prompt appears.</div>
+              <div>تأكد من أن الحساب مرتبط بدور التنظيف أو الصيانة المناسب قبل بدء العمل.</div>
+              <div>Make sure the account is mapped to the correct housekeeping or maintenance role.</div>
+              <div>استخدم شاشة العمليات لإسناد المهمة مباشرة إلى الموظف المسؤول ومتابعة تقدمها.</div>
+              <div>Use the operations screen to assign work directly to the responsible team member and monitor progress.</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout" style="margin-top: 6mm;">
+          <h3>Maintenance worker flow</h3>
+          <p>
+            Maintenance staff receive open and in-progress tickets in a simplified mobile-friendly view. They can start work, mark the task as resolved, and keep the operations team informed through status synchronization.
+          </p>
+        </div>
+      </section>
+
+      <section class="page">
+        <div class="section-head">
+          <div>
+            <h2>9. أفضل الممارسات السريعة</h2>
+            <p>تمثل هذه الصفحة خلاصة تنفيذية سريعة يمكن اعتمادها كمرجع يومي موحد للفرق التشغيلية والإدارية.</p>
+          </div>
+          <div class="page-number">09</div>
+        </div>
+        <div class="callout">
+          <h3>Quick Operating Standards</h3>
+          <div class="dual" style="margin-top: 5mm;">
+            <div class="lang arabic" style="background: transparent; border-color: rgba(255,255,255,0.12);">
+              <h4>Arabic</h4>
+              <ul>
+                <li>ابدأ يوم العمل من لوحة القيادة ثم راجع العمليات المفتوحة قبل إدخال أي بيانات أو طلبات جديدة.</li>
+                <li>حدّث حالة الوحدة والحجز بمجرد وقوع التغيير حتى تبقى المؤشرات والقرارات مبنية على بيانات صحيحة.</li>
+                <li>التزم بالصلاحيات المعتمدة فقط، وراجع الحساب والأمان بشكل دوري عند أي تغيير في الأدوار.</li>
+                <li>فعّل الإشعارات للفرق الميدانية حتى تصل المهام فور الإسناد وتقل فترات الانتظار.</li>
+              </ul>
+            </div>
+            <div class="lang english" style="background: transparent; border-color: rgba(255,255,255,0.12);">
+              <h4>English</h4>
+              <ul>
+                <li>Start each workday from the dashboard, then review open operations before creating new records or requests.</li>
+                <li>Update unit and booking states immediately so reporting, alerts, and decisions remain reliable.</li>
+                <li>Use only approved permissions and review account security whenever responsibilities change.</li>
+                <li>Enable notifications for field teams so assignments are delivered without operational delay.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { operationsApi } from "@/lib/api/operations";
 import { unitsApi } from "@/lib/api/units";
+import { usersApi } from "@/lib/api/users";
 import { formatDate } from "@/lib/utils";
 import { getTicketPriorityLabel, getTicketStatusLabel, getUnitStatusLabel, translateFormMessage, useI18n } from "@/lib/i18n";
 import { useAuthStore } from "@/stores/authStore";
-import type { CleaningTask, MaintenanceTicket, UnitStatus } from "@/types";
+import type { CleaningTask, MaintenanceTicket, UnitStatus, UserReference } from "@/types";
 import { Brush, Wrench, CheckCircle, Clock, AlertTriangle, Plus, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +16,7 @@ import { z } from "zod";
 
 const createCleaningSchema = z.object({
   unit_id: z.string().uuid("يرجى اختيار وحدة صحيحة"),
+  assigned_to: z.string().uuid("يرجى اختيار موظف صالح").optional().or(z.literal("")),
   notes: z.string().max(500, "الملاحظات طويلة أكثر من اللازم").optional(),
 });
 
@@ -23,6 +25,7 @@ const createTicketSchema = z.object({
   title: z.string().min(1, "العنوان مطلوب"),
   description: z.string().optional(),
   priority: z.enum(["low", "medium", "high", "urgent"]).default("medium"),
+  assigned_to: z.string().uuid("يرجى اختيار موظف صالح").optional().or(z.literal("")),
 });
 
 type CreateCleaningForm = z.infer<typeof createCleaningSchema>;
@@ -63,6 +66,12 @@ export function OperationsPageContent() {
   const { data: unitsLookup } = useQuery({
     queryKey: ["operations-unit-options"],
     queryFn: () => unitsApi.list({ page: 1, page_size: 100 }),
+  });
+
+  const { data: assignmentCandidates = [] } = useQuery({
+    queryKey: ["operations-assignment-candidates"],
+    queryFn: usersApi.listAssignmentCandidates,
+    enabled: canCreateCleaningTask || canCreateMaintenanceTicket,
   });
 
   const { data: cleaningTasks, isLoading: loadingCleaning } = useQuery({
@@ -115,16 +124,25 @@ export function OperationsPageContent() {
   } = useForm<CreateTicketForm>({ resolver: zodResolver(createTicketSchema) });
 
   const onCleaningSubmit = async (data: CreateCleaningForm) => {
-    await createCleaningMutation.mutateAsync(data);
+    await createCleaningMutation.mutateAsync({
+      ...data,
+      assigned_to: data.assigned_to || undefined,
+    });
     resetCleaning();
     setCreateMode(null);
   };
 
   const onTicketSubmit = async (data: CreateTicketForm) => {
-    await createTicketMutation.mutateAsync(data);
+    await createTicketMutation.mutateAsync({
+      ...data,
+      assigned_to: data.assigned_to || undefined,
+    });
     resetTicket();
     setCreateMode(null);
   };
+
+  const housekeepingCandidates = assignmentCandidates.filter((candidate: UserReference) => candidate.role === "housekeeping");
+  const maintenanceCandidates = assignmentCandidates.filter((candidate: UserReference) => candidate.role === "maintenance");
 
   const cleaningItems = cleaningTasks?.items ?? [];
   const ticketItems = tickets?.items ?? [];
@@ -378,6 +396,18 @@ export function OperationsPageContent() {
                 {cleaningErrors.unit_id && <p className="text-red-500 text-xs mt-1">{translateFormMessage(cleaningErrors.unit_id.message, language)}</p>}
               </div>
               <div>
+                <label className="block text-sm text-muted-foreground mb-1">{t("تعيين إلى", "Assign to")}</label>
+                <select {...registerCleaning("assigned_to")} className="input-field">
+                  <option value="">{t("بدون تعيين مباشر", "Leave unassigned")}</option>
+                  {housekeepingCandidates.map((candidate) => (
+                    <option key={candidate.id} value={candidate.id}>
+                      {candidate.full_name}
+                    </option>
+                  ))}
+                </select>
+                {cleaningErrors.assigned_to && <p className="text-red-500 text-xs mt-1">{translateFormMessage(cleaningErrors.assigned_to.message, language)}</p>}
+              </div>
+              <div>
                 <label className="block text-sm text-muted-foreground mb-1">{t("ملاحظات الطلب", "Request Notes")}</label>
                 <textarea
                   {...registerCleaning("notes")}
@@ -459,6 +489,16 @@ export function OperationsPageContent() {
                   <option value="high">{getTicketPriorityLabel("high", language)}</option>
                   <option value="urgent">{getTicketPriorityLabel("urgent", language)}</option>
                 </select>
+              </div>
+              <div>
+                <label className="block text-sm text-muted-foreground mb-1">{t("تعيين إلى", "Assign to")}</label>
+                <select {...registerTicket("assigned_to")} className="input-field">
+                  <option value="">{t("بدون تعيين مباشر", "Leave unassigned")}</option>
+                  {maintenanceCandidates.map((candidate) => (
+                    <option key={candidate.id} value={candidate.id}>{candidate.full_name}</option>
+                  ))}
+                </select>
+                {ticketErrors.assigned_to && <p className="text-red-500 text-xs mt-1">{translateFormMessage(ticketErrors.assigned_to.message, language)}</p>}
               </div>
               <div>
                 <label className="block text-sm text-muted-foreground mb-1">{t("الوصف", "Description")}</label>

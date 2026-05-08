@@ -48,3 +48,27 @@ export function useCreateRevenue() {
     },
   });
 }
+
+export function useInvoices(filters: Parameters<typeof financeApi.listInvoices>[0] = {}) {
+  return useQuery({
+    queryKey: ["invoices", filters],
+    queryFn: () => financeApi.listInvoices(filters),
+    staleTime: 30_000,
+  });
+}
+
+export function useJournalEntries(filters: Parameters<typeof financeApi.listJournalEntries>[0] = {}) {
+  return useQuery({
+    queryKey: ["journal-entries", filters],
+    queryFn: () => financeApi.listJournalEntries(filters),
+    staleTime: 30_000,
+  });
+}
+
+export function useTrialBalance() {
+  return useQuery({
+    queryKey: ["trial-balance"],
+    queryFn: () => financeApi.getTrialBalance(),
+    staleTime: 30_000,
+  });
+}
