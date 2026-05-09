@@ -382,7 +382,8 @@
   }
 
   .modal-shell {
-    @apply surface-panel w-full max-w-2xl p-6 shadow-2xl animate-fade-in md:p-7;
+    @apply surface-panel w-full max-w-2xl max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain p-6 shadow-2xl animate-fade-in md:p-7;
+    -webkit-overflow-scrolling: touch;
   }
 
   .empty-state {

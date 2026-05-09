@@ -389,18 +389,18 @@ export function BookingsPageContent() {
                 <textarea {...register("notes")} rows={3} className="input-field resize-none" />
               </div>
 
-              <div className="flex justify-end gap-3 pt-2">
+              <div className="sticky bottom-0 z-10 -mx-6 -mb-6 flex flex-col-reverse gap-3 border-t border-border/60 bg-background/95 px-6 py-4 backdrop-blur sm:static sm:mx-0 sm:mb-0 sm:flex-row sm:justify-end sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:pt-2 sm:backdrop-blur-none">
                 <button
                   type="button"
                   onClick={() => {
                     setShowCreate(false);
                     reset({ booking_channel: "direct", guests_count: 1 });
                   }}
-                  className="secondary-action"
+                  className="secondary-action w-full sm:w-auto"
                 >
                   {t("إلغاء", "Cancel")}
                 </button>
-                <button type="submit" disabled={isSubmitting} className="primary-action disabled:opacity-50">
+                <button type="submit" disabled={isSubmitting} className="primary-action w-full disabled:opacity-50 sm:w-auto">
                   {isSubmitting ? t("جاري الحفظ...", "Saving...") : t("تأكيد الحجز", "Confirm Booking")}
                 </button>
               </div>
